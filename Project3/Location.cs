@@ -14,6 +14,9 @@ namespace Project3
 {
     public class Location
     {
+        public string Id { get; set; }
+        public ICollection<Person> people { get; set; }
+        public ICollection<Location> neighbors { get; set; }
 
     }
 }
