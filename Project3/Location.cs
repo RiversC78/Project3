@@ -18,5 +18,11 @@ namespace Project3
         public ICollection<Person> people { get; set; }
         public ICollection<Location> neighbors { get; set; }
 
+        public Location(string id)
+        {
+            Id = id;
+            people = new List<Person>();
+            neighbors = new List<Location>();
+        }
     }
 }
