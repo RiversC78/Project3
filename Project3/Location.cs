@@ -27,6 +27,7 @@ namespace Project3
         //Method to spread the disease.
         public void SpreadDisease(double spreadChance)
         {
+            //for all people created
             foreach (Person person in people)
             {
                 if (person.IsInfected && !person.IsDead)
