@@ -42,12 +42,7 @@ namespace Project3
                                 otherPerson.IsInfected = true;
                                 otherPerson.InfectionCount++;
                                 person.InfectionSpreadCount++;
-
-
-
                             }
-
-
                         }
                     }
                 }
