@@ -27,6 +27,7 @@ namespace Project3
         //Method to spread the disease.
         public void SpreadDisease(double spreadChance)
         {
+            //for all people created
             foreach (Person person in people)
             {
                 if (person.IsInfected && !person.IsDead)
@@ -55,7 +56,9 @@ namespace Project3
             {
                 if (person.IsQuarantined)
                 {
-                    double randomValue = new Random().NextDouble();
+                    Random rand = new Random();
+                    double randomValue = rand.Next(1,101);
+
                     if (randomValue < person.QuarantineChance)
                     {
                         person.IsQuarantined = false;
@@ -73,7 +76,8 @@ namespace Project3
                 {
                     foreach (var neighbor in neighbors)
                     {
-                        double randomValue = new Random().NextDouble();
+                        Random rand = new Random();
+                        double randomValue = rand.Next(1, 101);
                         if (randomValue < person.TravelChance)
                         {
                             neighbor.people.Add(person);

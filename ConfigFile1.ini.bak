@@ -1,0 +1,11 @@
+[Configuration Info]
+chanceDiseaseKills = .5
+hoursDiseaseLasts = 10
+hoursQuarantineLasts = 14
+meanChanceQuarantine = .4
+standDevChanceQuarantine = .1
+durationOfSimMinutes = 5
+chanceOfTravel = .6
+chanceDiseaseSpread = .5
+meanPopSize = 50
+standDevPopSize = .2

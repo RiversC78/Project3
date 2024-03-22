@@ -1,9 +1,22 @@
 ﻿namespace Project3
 {
+    /// <summary>
+    /// container for main program
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// container for main program entry point 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
+            // File path for easy changing based off of where file is
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //load in configuration information 
+            Configuration config = new Configuration();
+            config.LoadConfiguration(filePath);
+
             //locations and people made to test methods
             Location location1 = new Location("Location1");
             Location location2 = new Location("Location2");
@@ -17,8 +30,6 @@
             location2.people.Add(new Person("Person 6", 7, 22, false, 0, 0, false, false, .5, .5, 0));
 
             List<Location> locations = new List<Location> { location1, location2 };
-
-            Configuration config = new Configuration();
 
             Queue<Person> infectedQueue = new Queue<Person>();
 
@@ -96,5 +107,6 @@
                 double deathPercent = totalDeaths / totalPeople * 100;
             }
         }
-    }
-}
+    }//end class
+}//end namespace
+
