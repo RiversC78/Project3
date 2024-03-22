@@ -24,7 +24,6 @@ namespace Project3
             people = new List<Person>();
             neighbors = new List<Location>();
         }
-
         //Method to spread the disease.
         public void SpreadDisease(double spreadChance)
         {
@@ -84,6 +83,7 @@ namespace Project3
                     }
                 }
             }
-        }
+        }   
     }
 }
+

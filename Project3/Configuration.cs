@@ -12,6 +12,8 @@ simulation. From the configuration file, the user should be able to adjust the f
  The percent chance that a person will travel each hour of the simulation.
 (Note: From the configurable settings above, you may extrapolate additional requirements.
  */
+using System.Text.RegularExpressions;
+
 namespace Project3
 {
     /// <summary>
@@ -37,7 +39,7 @@ namespace Project3
         //Standard Deviation of the percent chance of a person entering quarantine
         public double StDevQuarantineChance { get; set; }
         //How long the simulation lasts
-        public int SimulationHours { get; set; }
+        public int SimulationMinutes { get; set; }
         //Percent chance a person will travel each hour of the simulation
         public double TravelChance { get; set; }
 
@@ -46,19 +48,104 @@ namespace Project3
         {
             try
             {
-                string[] lines = File.ReadAllLines(filePath);
+                //check if file exists
+                if (File.Exists(filePath))
+                {
+                    //create a line count for the file 
+                    var lineCount = 0;
+                    using (var reader = File.OpenText(filePath))
+                    {
+                        while (reader.ReadLine() != null)
+                        {
+                            lineCount++;
+                        }
+                    }
+                    //read all the lines in the file and set equal to properties 
+                    using (var reader = File.OpenText(filePath))
+                    {
 
-                MeanPopulationSize = int.Parse(lines[0]);
-                StDevPopulationSize = int.Parse(lines[1]);
-                SpreadChance = double.Parse(lines[2]);
-                DeathChance = double.Parse(lines[3]);
-                DiseaseHours = int.Parse(lines[4]);
-                QuarantineHours = int.Parse(lines[5]);
-                MeanQuarantineChance = double.Parse(lines[6]);
-                StDevQuarantineChance = double.Parse(lines[7]);
-                SimulationHours = int.Parse(lines[8]);
-                TravelChance = double.Parse(lines[9]);
-
+                        for (int i = 1; i <= lineCount; i++)
+                        {
+                            //skip lines that start with "[" as those are section headers in a .ini file
+                            string line = reader.ReadLine();
+                            if(Regex.IsMatch(line, @"^\["))
+                            {
+                                continue; 
+                            }
+                            //set DeathChance
+                            else if (Regex.IsMatch(line, @"chanceDiseaseKills"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                DeathChance = int.Parse(propertySet); 
+                            }
+                            //set DiseaseHours
+                            else if (Regex.IsMatch(line, @"hoursDiseaseLasts"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                DiseaseHours = int.Parse(propertySet);
+                            }
+                            //set QuarantineHours
+                            else if (Regex.IsMatch(line, @"hoursQuarantineLasts"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                QuarantineHours = int.Parse(propertySet);
+                            }
+                            //set MeanQuarantineChance
+                            else if (Regex.IsMatch(line, @"meanChanceQuarantine"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                MeanQuarantineChance = int.Parse(propertySet);
+                            }
+                            //set StDevQuarantineChance
+                            else if (Regex.IsMatch(line, @"standDevChanceQuarantine"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                StDevQuarantineChance = int.Parse(propertySet);
+                            }
+                            //set Simulation Minutes 
+                            else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                SimulationMinutes = int.Parse(propertySet);
+                            }
+                            //set TravelChance
+                            else if (Regex.IsMatch(line, @"chanceOfTravel"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                TravelChance = int.Parse(propertySet);
+                            }
+                            //set SpreadChance
+                            else if (Regex.IsMatch(line, @"chanceDiseaseSpread"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                SpreadChance = int.Parse(propertySet);
+                            }
+                            //set MeanPopulationSize
+                            else if (Regex.IsMatch(line, @"meanPopSize"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                MeanPopulationSize = int.Parse(propertySet);
+                            }
+                            //set StDevPopulationSize
+                            else if (Regex.IsMatch(line, @"standDevPopSize"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                StDevPopulationSize = int.Parse(propertySet);
+                            }
+                        }
+                    }
+                }
+                else { throw new ArgumentException("No file found"); }
             }
             catch (Exception ex)
             {
