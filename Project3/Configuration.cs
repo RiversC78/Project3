@@ -144,7 +144,7 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                StDevPopulationSize = int.Parse(propertySet);
+                                StDevPopulationSize = (int)double.Parse(propertySet);
                             }
                         }
                     }
