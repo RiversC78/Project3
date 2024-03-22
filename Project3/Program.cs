@@ -13,6 +13,7 @@
         {
             // File path for easy changing based off of where file is
             string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+
             //load in configuration information 
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
@@ -106,7 +107,7 @@
                 //Determines percentage of dead people.
                 double deathPercent = totalDeaths / totalPeople * 100;
             }
-        }
+        }//end Main
     }//end class
 }//end namespace
 
