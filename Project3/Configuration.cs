@@ -26,21 +26,21 @@ namespace Project3
         public int MeanPopulationSize { get; set; }
         //Standard Deviation of the population size of a location at the start of the simulation
         public int StDevPopulationSize { get; set; }
-        //Percent chance of a disease spreading to another person
+        //Percent chance of a disease spreading to another person value between 0-100
         public double SpreadChance { get; set; }
-        //Percent chance of a disease flagging someone as dead
+        //Percent chance of a disease flagging someone as dead value between 0-100 as a percentage
         public double DeathChance { get; set; }
         //The number of hours the disease lasts
         public int DiseaseHours { get; set; }
         //The number of hours quarantine lasts
         public int QuarantineHours { get; set; }
-        //Mean percent chance someone enters quarantine
+        //Mean percent chance someone enters quarantine value between 0-100 as a percentage
         public double MeanQuarantineChance { get; set; }
-        //Standard Deviation of the percent chance of a person entering quarantine
+        //Standard Deviation of the percent chance of a person entering quarantine value between 0-100 as a percentage
         public double StDevQuarantineChance { get; set; }
         //How long the simulation lasts
         public int SimulationMinutes { get; set; }
-        //Percent chance a person will travel each hour of the simulation
+        //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
 
         //Method to load configuration from a file

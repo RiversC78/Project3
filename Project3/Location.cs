@@ -55,7 +55,9 @@ namespace Project3
             {
                 if (person.IsQuarantined)
                 {
-                    double randomValue = new Random().NextDouble();
+                    Random rand = new Random();
+                    double randomValue = rand.Next(1,101);
+
                     if (randomValue < person.QuarantineChance)
                     {
                         person.IsQuarantined = false;
@@ -73,7 +75,8 @@ namespace Project3
                 {
                     foreach (var neighbor in neighbors)
                     {
-                        double randomValue = new Random().NextDouble();
+                        Random rand = new Random();
+                        double randomValue = rand.Next(1, 101);
                         if (randomValue < person.TravelChance)
                         {
                             neighbor.people.Add(person);
