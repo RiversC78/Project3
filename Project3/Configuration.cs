@@ -72,12 +72,16 @@ namespace Project3
                             {
                                 continue; 
                             }
+                            else if (Regex.IsMatch(line, @"^\s*$"))
+                            {
+                                continue; 
+                            }
                             //set DeathChance
                             else if (Regex.IsMatch(line, @"chanceDiseaseKills"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                DeathChance = int.Parse(propertySet); 
+                                DeathChance = double.Parse(propertySet); 
                             }
                             //set DiseaseHours
                             else if (Regex.IsMatch(line, @"hoursDiseaseLasts"))
@@ -98,14 +102,14 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                MeanQuarantineChance = int.Parse(propertySet);
+                                MeanQuarantineChance = double.Parse(propertySet);
                             }
                             //set StDevQuarantineChance
                             else if (Regex.IsMatch(line, @"standDevChanceQuarantine"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                StDevQuarantineChance = int.Parse(propertySet);
+                                StDevQuarantineChance = double.Parse(propertySet);
                             }
                             //set Simulation Minutes 
                             else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
@@ -119,14 +123,14 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                TravelChance = int.Parse(propertySet);
+                                TravelChance = double.Parse(propertySet);
                             }
                             //set SpreadChance
                             else if (Regex.IsMatch(line, @"chanceDiseaseSpread"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                SpreadChance = int.Parse(propertySet);
+                                SpreadChance = double.Parse(propertySet);
                             }
                             //set MeanPopulationSize
                             else if (Regex.IsMatch(line, @"meanPopSize"))
