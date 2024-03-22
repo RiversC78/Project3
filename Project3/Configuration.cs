@@ -12,6 +12,8 @@ simulation. From the configuration file, the user should be able to adjust the f
  The percent chance that a person will travel each hour of the simulation.
 (Note: From the configurable settings above, you may extrapolate additional requirements.
  */
+using System.Text.RegularExpressions;
+
 namespace Project3
 {
     /// <summary>
@@ -46,19 +48,30 @@ namespace Project3
         {
             try
             {
-                string[] lines = File.ReadAllLines(filePath);
+                //check if file exists
+                if (File.Exists(filePath))
+                {
+                    //read all the lines in the file and set equal to properties 
+                    using (var reader = File.OpenText(filePath))
+                    {
 
-                MeanPopulationSize = int.Parse(lines[0]);
-                StDevPopulationSize = int.Parse(lines[1]);
-                SpreadChance = double.Parse(lines[2]);
-                DeathChance = double.Parse(lines[3]);
-                DiseaseHours = int.Parse(lines[4]);
-                QuarantineHours = int.Parse(lines[5]);
-                MeanQuarantineChance = double.Parse(lines[6]);
-                StDevQuarantineChance = double.Parse(lines[7]);
-                SimulationHours = int.Parse(lines[8]);
-                TravelChance = double.Parse(lines[9]);
-
+                        for (int i = 1; i <= 11; i++)
+                        {
+                            string line = reader.ReadLine();
+                            if(Regex.IsMatch(line, @"^\["))
+                            {
+                                continue; 
+                            }
+                            else if (Regex.IsMatch(line, @"chanceDiseaseKills"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                DeathChance = int.Parse(propertySet); 
+                            }
+                        }
+                    }
+                }
+                else { throw new ArgumentException("No file found"); }
             }
             catch (Exception ex)
             {
