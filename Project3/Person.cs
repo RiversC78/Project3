@@ -48,11 +48,14 @@ namespace Project3
         //Bool to indicate if a person is quarantined -- they will not travel to other locations and will not spread disease, but will resume travel once recovered. 
         public bool IsQuarantined { get; set; }
         //Percentage likelihood a person is to quaratine once infected 
-        double QuarantineChance { get; set; }
+        public double QuarantineChance { get; set; }
+        public double TravelChance { get; set; }
+        //Track how long someone has been infected
+        public int InfectionTime { get; set; }
 
 
         //Constructor
-        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance)
+        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance, int infectionTime)
         {
             Id = id;
             TravelStartTime = travelStartTime;
@@ -63,6 +66,8 @@ namespace Project3
             IsDead = isDead;
             IsQuarantined = isQuarantined;
             QuarantineChance = quarantineChance;
+            TravelChance = travelChance;
+            InfectionTime = infectionTime;
         }
     }
 }

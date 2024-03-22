@@ -24,5 +24,66 @@ namespace Project3
             people = new List<Person>();
             neighbors = new List<Location>();
         }
+        //Method to spread the disease.
+        public void SpreadDisease(double spreadChance)
+        {
+            foreach (Person person in people)
+            {
+                if (person.IsInfected && !person.IsDead)
+                {
+                    foreach (Person otherPerson in people)
+                    {
+                        if (otherPerson != person && !otherPerson.IsInfected && !otherPerson.IsDead)
+                        {
+                            double randomValue = new Random().NextDouble();
+                            if (randomValue > spreadChance)
+                            {
+                                otherPerson.IsInfected = true;
+                                otherPerson.InfectionCount++;
+                                person.InfectionSpreadCount++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Method to continue to travel after quarantine.
+        public void TravelAfterQuarantine()
+        {
+            foreach (Person person in people)
+            {
+                if (person.IsQuarantined)
+                {
+                    double randomValue = new Random().NextDouble();
+                    if (randomValue < person.QuarantineChance)
+                    {
+                        person.IsQuarantined = false;
+                    }
+                }
+            }
+        }
+
+        public void MovePeople()
+        {
+            foreach (Person person in people)
+            {
+
+                if (!person.IsDead && !person.IsQuarantined)
+                {
+                    foreach (var neighbor in neighbors)
+                    {
+                        double randomValue = new Random().NextDouble();
+                        if (randomValue < person.TravelChance)
+                        {
+                            neighbor.people.Add(person);
+                            people.Remove(person);
+                            break;
+                        }
+                    }
+                }
+            }
+        }   
     }
 }
+
