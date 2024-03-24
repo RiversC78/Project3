@@ -5,7 +5,6 @@
         static void Main(string[] args)
         {
 
-
             // File path for easy changing based off of where file is
             string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
