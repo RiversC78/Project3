@@ -24,6 +24,8 @@ o The configuration file will provide a mean and a standard deviation.
 o This value must be randomly generated based on a normal random distribution as
 defined by the configuration file.
  */
+using System.Data;
+
 namespace Project3
 {
     /// <summary>
@@ -50,12 +52,13 @@ namespace Project3
         //Percentage likelihood a person is to quaratine once infected 
         public double QuarantineChance { get; set; }
         public double TravelChance { get; set; }
+
         //Track how long someone has been infected
-        public int InfectionTime { get; set; }
+        //public int InfectionTime { get; set; }
 
 
         //Constructor
-        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance, int infectionTime)
+        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance)
         {
             Id = id;
             TravelStartTime = travelStartTime;
@@ -67,7 +70,27 @@ namespace Project3
             IsQuarantined = isQuarantined;
             QuarantineChance = quarantineChance;
             TravelChance = travelChance;
-            InfectionTime = infectionTime;
+            //InfectionTime = infectionTime;
+        }
+        
+        //Determines if a person will move
+        public bool ShouldMove(int currentHour)
+        {
+            return !IsQuarantined && !IsDead && currentHour >= TravelStartTime && currentHour <= TravelEndTime;
+        }
+
+        //Updates people's attributes
+        //After a certain amount of time, people should exit quarantine
+        //Chance to die
+        public void Update()
+        {
+
+        }
+
+        //Determines if someone can spread the disease
+        public bool CanSpread()
+        {
+            return !IsQuarantined && !IsDead && IsInfected;
         }
     }
 }
