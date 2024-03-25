@@ -4,97 +4,133 @@
     {
         static void Main(string[] args)
         {
-            //locations and people made to test methods
-            Location location1 = new Location("Location1");
-            Location location2 = new Location("Location2");
 
-            location1.people.Add(new Person("Person 1", 7, 22, true, 0, 0, false, false, .5, .5, 0));
-            location1.people.Add(new Person("Person 2", 7, 22, false, 0, 0, false, false, .5, .5, 0));
-            location1.people.Add(new Person("Person 3", 7, 22, false, 0, 0, false, false, .5, .5, 0));
+            // File path for easy changing based off of where file is
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
-            location2.people.Add(new Person("Person 4", 7, 22, false, 0, 0, false, false, .5, .5, 0));
-            location2.people.Add(new Person("Person 5", 7, 22, false, 0, 0, false, false, .5, .5, 0));
-            location2.people.Add(new Person("Person 6", 7, 22, false, 0, 0, false, false, .5, .5, 0));
+
+
+            //load in configuration information 
+            Configuration config = new Configuration();
+            config.LoadConfiguration(filePath);
+
+            //Create two locations
+            Location location1 = CreateLocation("location 1", config);
+            Location location2 = CreateLocation("location 2", config);
+
+
+            //The locations are neighbors
+            location1.neighbors.Add(location2);
+            location2.neighbors.Add(location1);
 
             List<Location> locations = new List<Location> { location1, location2 };
 
-            Configuration config = new Configuration();
+            int totalSimulationMinutes = 0;
 
-            Queue<Person> infectedQueue = new Queue<Person>();
+            //loop for ebery person that updates attributes
+            //loop for every location thats spreads 
 
-            for (int hour = 0; hour < 24; hour++)
+            //Runs the simulation until the total simulation time reaches the configuration's total time
+            while (totalSimulationMinutes < config.SimulationMinutes)
             {
-                foreach (Location location in locations)
+                //Simulates each hour of the day
+                for (int hour = 0; hour < 24; hour++)
                 {
-                    foreach (Person person in location.people)
+                    foreach (Location location in locations)
                     {
-                        if (hour >= person.TravelStartTime && hour <= person.TravelEndTime)
+                        foreach (Person person in location.people)
                         {
-                            location.MovePeople();
-                            location.SpreadDisease(config.SpreadChance);
+                            //***TO DO: update still needs functionality***
+                            person.Update();
 
-                            if (person.IsInfected)
+                            //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
+                            if (person.ShouldMove(hour))
                             {
-                                if (person.InfectionTime >= 2)
-                                {
-                                    person.IsInfected = false;
-                                }
-                                else
-                                {
-                                    person.InfectionTime++;
-                                    infectedQueue.Enqueue(person);
-                                }
+                                location.MovePeople();
+                            }
+                            //If a person isn't quarantined or dead, they may spread the disease
+                            if (person.CanSpread())
+                            {
+                                location.SpreadDisease(config.SpreadChance);
+                            }
+
+                            //Data to log to CSV:
+                            // The person’s information that has been infected the most
+                            // The person’s information that has spread the disease the most
+                            // The number of people currently not dead
+                            // The number of people currently dead
+                            // The number of people currently infected with the disease
+                            // The number of people currently quarantined
+
+                            string[] metrics = { };
+                            foreach (string data in metrics)
+                            {
+
                             }
                         }
                     }
-                }
 
+                    //Increments the total simulation minutes by an hour
+                    totalSimulationMinutes += 60;
 
-                //Determines the total amount of infection spread
-                int totalInfectedCount = 0;
-                foreach (var Location in locations)
-                {
-                    foreach (var person in Location.people)
+                    //When the total simulation minutes reaches the time specified in the configuration, it ends
+                    if (totalSimulationMinutes >= config.SimulationMinutes)
                     {
-                        totalInfectedCount += person.InfectionSpreadCount;
+                        break;
                     }
                 }
-
-                //Determines total amount of deaths
-                int totalDeaths = 0;
-                foreach (var Location in locations)
-                {
-                    foreach (var person in Location.people)
-                    {
-                        if (person.IsDead)
-                        {
-                            totalDeaths++;
-                        }
-                    }
-                }
-
-                //Determines what percentage of people were infected at the end of the simulation
-                int totalPeople = 0;
-                int totalInfected = 0;
-                double infectionPercent;
-                foreach (var Location in locations)
-                {
-                    totalPeople += Location.people.Count;
-
-                    foreach (var person in Location.people)
-                    {
-                        if (person.IsInfected)
-                        {
-                            totalInfected++;
-                        }
-                    }
-                }
-                //Determines the percentage of people infected
-                infectionPercent = totalInfected / totalPeople * 100;
-
-                //Determines percentage of dead people.
-                double deathPercent = totalDeaths / totalPeople * 100;
             }
+
+            //Determines the total amount of infection spread
+            int totalInfectedCount = 0;
+            foreach (Location Location in locations)
+            {
+                foreach (Person person in Location.people)
+                {
+                    totalInfectedCount += person.InfectionSpreadCount;
+                }
+            }
+
+            //Determines total amount of deaths
+            int totalDeaths = 0;
+            foreach (var Location in locations)
+            {
+                foreach (var person in Location.people)
+                {
+                    if (person.IsDead)
+                    {
+                        totalDeaths++;
+                    }
+                }
+            }
+
+        }
+        public static Location CreateLocation(string locationId, Configuration config)
+        {
+            // Generate population size for the location based on mean and standard deviation
+            int populationSize = (int)Math.Round(config.MeanPopulationSize + (config.StDevPopulationSize * RandomGaussian()));
+
+            // Generate people for the location
+            List<Person> people = config.GeneratePeople(populationSize);
+
+            // Create the location
+            Location location = new Location(locationId);
+
+            foreach (Person person in people)
+            {
+                location.people.Add(person);
+            }
+
+            return location;
+        }
+        //Generates numbers using a normal distribution
+        public static double RandomGaussian()
+        {
+            Random rand = new Random();
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
+            return randStdNormal;
         }
     }
 }

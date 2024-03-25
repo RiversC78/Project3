@@ -11,7 +11,7 @@ simulation. From the configuration file, the user should be able to adjust the f
  How long the simulation should last.
  The percent chance that a person will travel each hour of the simulation.
 (Note: From the configurable settings above, you may extrapolate additional requirements.
- */
+*/
 using System.Text.RegularExpressions;
 
 namespace Project3
@@ -68,16 +68,26 @@ namespace Project3
                         {
                             //skip lines that start with "[" as those are section headers in a .ini file
                             string line = reader.ReadLine();
-                            if(Regex.IsMatch(line, @"^\["))
+                            if (Regex.IsMatch(line, @"^\["))
                             {
-                                continue; 
+                                continue;
                             }
+
+                            else if (Regex.IsMatch(line, @"^\s*$"))
+                            {
+                                continue;
+                            }
+
                             //set DeathChance
                             else if (Regex.IsMatch(line, @"chanceDiseaseKills"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                DeathChance = int.Parse(propertySet); 
+
+                                DeathChance = int.Parse(propertySet);
+
+                                DeathChance = double.Parse(propertySet);
+
                             }
                             //set DiseaseHours
                             else if (Regex.IsMatch(line, @"hoursDiseaseLasts"))
@@ -151,6 +161,85 @@ namespace Project3
             {
                 Console.WriteLine("Unable to load configuration");
             }
+
+        }
+
+        //Generates people based on configuration settings
+        public List<Person> GeneratePeople(int peopleCount)
+        {
+            //Create a list of people
+            List<Person> people = new List<Person>();
+
+            Random rand = new Random();
+
+            for (int i = 0; i < peopleCount; i++)
+            {
+
+                string id = $"Person_{i}";
+                //People may begin travelling between hours 0-23
+                int travelStartTime = rand.Next(0, 24);
+                //travelEndTime can only be after travelStartTime
+                int travelEndTime = rand.Next(travelStartTime + 1, 25);
+                //Everyone starts out not infected
+                bool isInfected = false;
+                int infectionCount = 0;
+                int infectionSpreadCount = 0;
+                //Everyone is alive at generation
+                bool isDead = false;
+                //No one is quarantined at generation
+                bool isQuarantined = false;
+                //Quarantine chance is taken from the configuration
+                double quarantineChance = GenerateQuarantineChance();
+                double travelChance = TravelChance;
+
+                //Create person object
+                Person person = new Person(id, travelStartTime, travelEndTime, isInfected,
+                                            infectionCount, infectionSpreadCount, isDead,
+                                            isQuarantined, quarantineChance, travelChance);
+                //Generated people are added to a list
+                people.Add(person);
+            }
+
+            return people;
+        }
+
+        private double GenerateQuarantineChance()
+        {
+            //Generate quarantine chance based on a normal random distribution
+            Random rand = new Random();
+            //Mean and stardard deviation of quarantine chance are taken from configuration
+            double mean = MeanQuarantineChance;
+            double stdDev = StDevQuarantineChance;
+            double chance = rand.NextGaussian(mean, stdDev);
+            //Chance clamped between 0 and 1
+            return Math.Max(0, Math.Min(1, chance));
+        }
+
+
+
+        //Generates numbers using a normal distribution
+        public static double RandomGaussian()
+        {
+            Random rand = new Random();
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
+            return randStdNormal;
+        }
+
+    }
+
+    // Extension method to generate Gaussian random numbers
+    public static class RandomExtensions
+    {
+        public static double NextGaussian(this Random rand, double mean, double stdDev)
+        {
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                         Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
+            double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
+            return randNormal;
         }
     }
 }
