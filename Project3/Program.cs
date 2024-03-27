@@ -1,14 +1,25 @@
 ﻿namespace Project3
 {
+    /// <summary>
+    /// container for main program
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// container for main program entry point 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-
             // File path for easy changing based off of where file is
             string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //load in configuration information 
+            Configuration config = new Configuration();
+            config.LoadConfiguration(filePath);
 
-
+            //locations and people made to test methods
+            Location location1 = new Location("Location1");
+            Location location2 = new Location("Location2");
 
             //load in configuration information 
             Configuration config = new Configuration();
@@ -132,5 +143,6 @@
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
             return randStdNormal;
         }
-    }
-}
+    }//end class
+}//end namespace
+

@@ -26,21 +26,21 @@ namespace Project3
         public int MeanPopulationSize { get; set; }
         //Standard Deviation of the population size of a location at the start of the simulation
         public int StDevPopulationSize { get; set; }
-        //Percent chance of a disease spreading to another person
+        //Percent chance of a disease spreading to another person value between 0-100
         public double SpreadChance { get; set; }
-        //Percent chance of a disease flagging someone as dead
+        //Percent chance of a disease flagging someone as dead value between 0-100 as a percentage
         public double DeathChance { get; set; }
         //The number of hours the disease lasts
         public int DiseaseHours { get; set; }
         //The number of hours quarantine lasts
         public int QuarantineHours { get; set; }
-        //Mean percent chance someone enters quarantine
+        //Mean percent chance someone enters quarantine value between 0-100 as a percentage
         public double MeanQuarantineChance { get; set; }
-        //Standard Deviation of the percent chance of a person entering quarantine
+        //Standard Deviation of the percent chance of a person entering quarantine value between 0-100 as a percentage
         public double StDevQuarantineChance { get; set; }
         //How long the simulation lasts
         public int SimulationMinutes { get; set; }
-        //Percent chance a person will travel each hour of the simulation
+        //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
 
         //Method to load configuration from a file
@@ -72,7 +72,6 @@ namespace Project3
                             {
                                 continue;
                             }
-
                             else if (Regex.IsMatch(line, @"^\s*$"))
                             {
                                 continue;
@@ -84,9 +83,7 @@ namespace Project3
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
 
-                                DeathChance = int.Parse(propertySet);
-
-                                DeathChance = double.Parse(propertySet);
+                                DeathChance = double.Parse(propertySet); 
 
                             }
                             //set DiseaseHours
@@ -108,14 +105,14 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                MeanQuarantineChance = int.Parse(propertySet);
+                                MeanQuarantineChance = double.Parse(propertySet);
                             }
                             //set StDevQuarantineChance
                             else if (Regex.IsMatch(line, @"standDevChanceQuarantine"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                StDevQuarantineChance = int.Parse(propertySet);
+                                StDevQuarantineChance = double.Parse(propertySet);
                             }
                             //set Simulation Minutes 
                             else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
@@ -129,14 +126,14 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                TravelChance = int.Parse(propertySet);
+                                TravelChance = double.Parse(propertySet);
                             }
                             //set SpreadChance
                             else if (Regex.IsMatch(line, @"chanceDiseaseSpread"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                SpreadChance = int.Parse(propertySet);
+                                SpreadChance = double.Parse(propertySet);
                             }
                             //set MeanPopulationSize
                             else if (Regex.IsMatch(line, @"meanPopSize"))
@@ -150,7 +147,7 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                StDevPopulationSize = int.Parse(propertySet);
+                                StDevPopulationSize = (int)double.Parse(propertySet);
                             }
                         }
                     }
