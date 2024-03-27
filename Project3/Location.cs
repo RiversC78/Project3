@@ -13,12 +13,16 @@ once the quarantine period is complete
  */
 namespace Project3
 {
+    /// <summary>
+    /// Class to hold location information about the people at a certain location and the locations directly next to itself
+    /// </summary>
     public class Location
     {
         public string Id { get; set; }
         public ICollection<Person> people { get; set; }
         public ICollection<Location> neighbors { get; set; }
 
+        //Location constructor
         public Location(string id)
         {
             Id = id;
@@ -26,10 +30,14 @@ namespace Project3
             neighbors = new List<Location>();
 
         }
-
         //put in person? :(
         //Method to spread the disease.
         //***TO DO: add chance to quarantine***
+        /// <summary>
+        /// Method to spread disease
+        /// </summary>
+        /// <param name="spreadChance"></param>
+
         public void SpreadDisease(double spreadChance)
         {
             //for all people created
@@ -77,9 +85,12 @@ namespace Project3
                         }
                     }
                 }
-        }
+        }//end SpreadDisease
 
-        //Method to continue to travel after quarantine.
+
+        /// <summary>
+        /// Method to continue travel for persons after quarantine
+        /// </summary>
         public void TravelAfterQuarantine()
         {
             foreach (Person person in people)
@@ -98,6 +109,10 @@ namespace Project3
         }
 
         //Moves a person to a neighbor location
+        }//end TravelAfterQuarantine
+        /// <summary>
+        /// Method to move people around from locations 
+        /// </summary>
         public void MovePeople()
         {
             foreach (Person person in people)
@@ -127,6 +142,8 @@ namespace Project3
                     people.Remove(person);
                 }
             }
-        }
-    }
-}
+
+        }//end MovePeople
+    }//end class
+}//end namespace
+

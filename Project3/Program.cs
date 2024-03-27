@@ -1,4 +1,6 @@
-﻿namespace Project3
+﻿using System.Diagnostics;
+
+namespace Project3
 {
     /// <summary>
     /// container for main program
@@ -13,9 +15,11 @@
         {
             // File path for easy changing based off of where file is
             string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+
             //load in configuration information 
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
+
 
 
             //Create two locations
@@ -33,6 +37,7 @@
 
             //loop for ebery person that updates attributes
             //loop for every location thats spreads 
+
 
             //Runs the simulation until the total simulation time reaches the configuration's total time
             while (totalSimulationMinutes < config.SimulationMinutes)
@@ -135,7 +140,8 @@
             double u2 = 1.0 - rand.NextDouble();
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
             return randStdNormal;
-        }
+        
+        }//end Main
     }//end class
 }//end namespace
 

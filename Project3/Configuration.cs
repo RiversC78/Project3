@@ -43,7 +43,11 @@ namespace Project3
         //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
 
-        //Method to load configuration from a file
+        /// <summary>
+        /// method to load information from a config file
+        /// </summary>
+        /// <param name="filePath">filepath to config file</param>
+        /// <exception cref="ArgumentException"></exception>
         public void LoadConfiguration(string filePath)
         {
             try
@@ -238,5 +242,6 @@ namespace Project3
             double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
             return randNormal;
         }
-    }
-}
+    }//end class
+}//end namespace
+

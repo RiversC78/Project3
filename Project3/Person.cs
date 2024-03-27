@@ -57,6 +57,7 @@ namespace Project3
         //public int InfectionTime { get; set; }
 
 
+
         //Constructor
         public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance)
         {
