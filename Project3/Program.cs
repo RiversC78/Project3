@@ -17,13 +17,6 @@
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
 
-            //locations and people made to test methods
-            Location location1 = new Location("Location1");
-            Location location2 = new Location("Location2");
-
-            //load in configuration information 
-            Configuration config = new Configuration();
-            config.LoadConfiguration(filePath);
 
             //Create two locations
             Location location1 = CreateLocation("location 1", config);
