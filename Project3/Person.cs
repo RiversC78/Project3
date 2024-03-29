@@ -52,6 +52,10 @@ namespace Project3
         //Percentage likelihood a person is to quaratine once infected 
         public double QuarantineChance { get; set; }
         public double TravelChance { get; set; }
+        //Remaining time in quarantine
+        public int QuarantineStartTime { get; set; }
+
+        
 
         //Track how long someone has been infected
         //public int InfectionTime { get; set; }
@@ -82,9 +86,16 @@ namespace Project3
         //Updates people's attributes
         //After a certain amount of time, people should exit quarantine
         //Chance to die
-        public void Update()
+        public bool Update(int currentTime, int hoursQuarantineLasts)
         {
+            // If the person is not in quarantine or has already been quarantined for more than the specified number of hours, return true
+            if (!IsQuarantined || currentTime - QuarantineStartTime > hoursQuarantineLasts)
+            {
+                return true;
+            }
 
+            // Otherwise, the quarantine has not ended, return false
+            return false;
         }
 
         //Determines if someone can spread the disease
@@ -92,5 +103,6 @@ namespace Project3
         {
             return !IsQuarantined && !IsDead && IsInfected;
         }
+
     }
 }

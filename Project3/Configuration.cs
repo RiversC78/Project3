@@ -84,7 +84,7 @@ namespace Project3
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
 
-                                DeathChance = int.Parse(propertySet);
+                                //DeathChance = int.Parse(propertySet);
 
                                 DeathChance = double.Parse(propertySet);
 

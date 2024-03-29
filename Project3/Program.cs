@@ -2,13 +2,30 @@
 {
     internal class Program
     {
+        //Variable for the StreamWriter
+        
         static void Main(string[] args)
         {
 
             // File path for easy changing based off of where file is
-            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
+            //filepath for csv
+            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
 
+            //Variables used for CSV file metrics
+            int day = 0;
+            //used for finding who has come into contact with the disease the most
+            int highestInfectionCount = 0;
+            Person mostInfectedPerson = null;
+            //used for finding who has spread the disease the most
+            int highestSpreadCountNum = 0;
+            Person highestSpreadCount = null;
+            int aliveCount = 0;
+            int deadCount = 0;
+            int infectedCount = 0;
+            int QuarantinedCount = 0;
 
             //load in configuration information 
             Configuration config = new Configuration();
@@ -29,6 +46,8 @@
 
             //loop for ebery person that updates attributes
             //loop for every location thats spreads 
+            int currentTime = 0;
+
 
             //Runs the simulation until the total simulation time reaches the configuration's total time
             while (totalSimulationMinutes < config.SimulationMinutes)
@@ -40,8 +59,9 @@
                     {
                         foreach (Person person in location.people)
                         {
-                            //***TO DO: update still needs functionality***
-                            person.Update();
+                            //**TODO: Update still needs to be fixed. 
+                            //Updates how long someone has been in quarantine
+                            person.Update(currentTime, config.QuarantineHours);
 
                             //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
                             if (person.ShouldMove(hour))
@@ -54,24 +74,83 @@
                                 location.SpreadDisease(config.SpreadChance);
                             }
 
-                            //Data to log to CSV:
-                            // The person’s information that has been infected the most
-                            // The person’s information that has spread the disease the most
-                            // The number of people currently not dead
-                            // The number of people currently dead
-                            // The number of people currently infected with the disease
-                            // The number of people currently quarantined
-
-                            string[] metrics = { };
-                            foreach (string data in metrics)
+                            //Checks who has contacted the disease most this hour
+                            if (person.InfectionCount > highestInfectionCount)
                             {
-
+                                highestInfectionCount= person.InfectionCount;
+                                mostInfectedPerson = person;
                             }
+
+                            //Checks who has spread the disease the most this hour
+                            if (person.InfectionSpreadCount > highestSpreadCountNum)
+                            {
+                                highestSpreadCountNum = person.InfectionSpreadCount;
+                                highestSpreadCount = person;
+                            }
+
+                            if (person.IsDead)
+                            {
+                                deadCount++;
+                            } else
+                            {
+                                aliveCount++;
+                            }
+                            
+                            if (person.IsInfected)
+                            {
+                                infectedCount++;
+                            }
+
+                            if (person.IsQuarantined)
+                            {
+                                QuarantinedCount++;
+                            }
+
                         }
                     }
+                    //Data to log to CSV:
+                    // The person’s information that has been infected the most
+                    // The person’s information that has spread the disease the most
+                    // The number of people currently not dead
+                    // The number of people currently dead
+                    // The number of people currently infected with the disease
+                    // The number of people currently quarantined
+
+                    //Write metrics to CSV 
+                    using (StreamWriter writer = new StreamWriter(new FileStream(csvFilePath, FileMode.Append, FileAccess.Write)))
+                    {
+                        writer.WriteLine($"--- Day {day}  - Hour {hour} ---");
+                        if (mostInfectedPerson != null)
+                        {
+                            writer.WriteLine($"  -  Person who has contacted the most disease: Person {mostInfectedPerson.Id}");
+                        }
+                        else
+                        {
+                            writer.WriteLine($"  -  Person who has contacted the most disease: no one.");
+                        }
+                        if (highestSpreadCount != null)
+                        {
+                            writer.WriteLine($"  -  Person who has spread the most disease: Person {highestSpreadCount.Id}");
+                        }
+                        else
+                        {
+                            writer.WriteLine($"  -  Person who has spread the most disease: no one.");
+                        }
+                        writer.WriteLine($"  -  People alive: {aliveCount}");
+                        writer.WriteLine($"  -  People dead: {deadCount}");
+                        writer.WriteLine($"  -  People infected: {infectedCount}");
+                        writer.WriteLine($"  -  People Quarantined: {QuarantinedCount}");
+                        writer.Close();
+                    }
+                    deadCount = 0;
+                    aliveCount = 0;
+                    infectedCount = 0;
+                    QuarantinedCount = 0;
 
                     //Increments the total simulation minutes by an hour
                     totalSimulationMinutes += 60;
+                    
+                    
 
                     //When the total simulation minutes reaches the time specified in the configuration, it ends
                     if (totalSimulationMinutes >= config.SimulationMinutes)
@@ -80,29 +159,8 @@
                     }
                 }
             }
-
-            //Determines the total amount of infection spread
-            int totalInfectedCount = 0;
-            foreach (Location Location in locations)
-            {
-                foreach (Person person in Location.people)
-                {
-                    totalInfectedCount += person.InfectionSpreadCount;
-                }
-            }
-
-            //Determines total amount of deaths
-            int totalDeaths = 0;
-            foreach (var Location in locations)
-            {
-                foreach (var person in Location.people)
-                {
-                    if (person.IsDead)
-                    {
-                        totalDeaths++;
-                    }
-                }
-            }
+            Console.WriteLine(" ---- Final Report: ");
+            Console.Write($"Total run time: ");
 
         }
         public static Location CreateLocation(string locationId, Configuration config)
