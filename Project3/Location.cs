@@ -32,7 +32,7 @@ namespace Project3
             Id = id;
             people = new List<Person>();
             neighbors = new List<Location>();
-            populationSizes= new List<int>();
+            populationSizes = new List<int>();
             SickCount = new List<int>();
 
         }
@@ -50,7 +50,7 @@ namespace Project3
                 int chance = random.Next(0, 100);
                 if (chance > spreadChance && !otherPerson.IsQuarantined)
                 {
-                    otherPerson.IsInfected= true;
+                    otherPerson.IsInfected = true;
                     otherPerson.InfectionCount++;
                     currentPerson.InfectionSpreadCount++;
 
@@ -58,11 +58,12 @@ namespace Project3
                     chance = random.Next(0, 100);
                     if (otherPerson.QuarantineChance < chance)
                     {
-                        otherPerson.IsQuarantined= true;
+                        otherPerson.IsQuarantined = true;
                     }
                 }
+            }
         }//end SpreadDisease
-        //Moves a person to a neighboring location
+         //Moves a person to a neighboring location
         public void MovePeople(Person person)
         {
             Random random = new Random();
@@ -83,7 +84,7 @@ namespace Project3
         }
 
         //Averages the population sizes
-        public double AveragePopulation() 
+        public double AveragePopulation()
         {
             return populationSizes.Average();
         }
@@ -109,4 +110,3 @@ namespace Project3
         }
     }
 }
-
