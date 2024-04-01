@@ -80,7 +80,7 @@ namespace Project3
             IsQuarantined = isQuarantined;
             QuarantineChance = quarantineChance;
             TravelChance = travelChance;
-            InfectionTime = infectionTime;
+            //InfectionTime = infectionTime;
             QuarantineTime = quarantineTime;
 
             this.config = config;
@@ -123,13 +123,13 @@ namespace Project3
             //Determines if someone still has the disease
             if (IsInfected)
             {
-                InfectionTime++;
-                //If they've been infected for the duration the disease lasts, they no longer are infected
-                if (InfectionTime >= config.DiseaseHours)
-                {
-                    IsInfected = false;
-                    InfectionTime = 0;
-                }
+                //InfectionTime++;
+                ////If they've been infected for the duration the disease lasts, they no longer are infected
+                //if (InfectionTime >= config.DiseaseHours)
+                //{
+                //    IsInfected = false;
+                //    InfectionTime = 0;
+                //}
             }
         }
 

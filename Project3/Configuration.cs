@@ -40,7 +40,7 @@ namespace Project3
         //Standard Deviation of the percent chance of a person entering quarantine value between 0-100 as a percentage
         public double StDevQuarantineChance { get; set; }
         //How long the simulation lasts
-        public int SimulationMinutes { get; set; }
+        public int SimulationHours { get; set; }
         //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
 
@@ -121,12 +121,12 @@ namespace Project3
                                 string propertySet = temp[1].Trim();
                                 StDevQuarantineChance = double.Parse(propertySet);
                             }
-                            //set Simulation Minutes 
+                            //set Simulation Hours 
                             else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                SimulationMinutes = int.Parse(propertySet);
+                                SimulationHours = int.Parse(propertySet);
                             }
                             //set TravelChance
                             else if (Regex.IsMatch(line, @"chanceOfTravel"))
