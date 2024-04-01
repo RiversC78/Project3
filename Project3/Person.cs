@@ -55,14 +55,17 @@ namespace Project3
         //Remaining time in quarantine
         public int QuarantineStartTime { get; set; }
 
-        
-
         //Track how long someone has been infected
-        //public int InfectionTime { get; set; }
+        public int InfectionTime { get; set; }
+
+        //Track how long someone has been in quarantine
+        public int QuarantineTime { get; set; }
+
+        private readonly Configuration config;
 
 
         //Constructor
-        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance)
+        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance, int infectionTime, int quarantineTime, Configuration config)
         {
             Id = id;
             TravelStartTime = travelStartTime;
@@ -74,7 +77,12 @@ namespace Project3
             IsQuarantined = isQuarantined;
             QuarantineChance = quarantineChance;
             TravelChance = travelChance;
-            //InfectionTime = infectionTime;
+            InfectionTime = infectionTime;
+            QuarantineTime = quarantineTime;
+
+            this.config = config;
+
+
         }
         
         //Determines if a person will move
@@ -84,18 +92,46 @@ namespace Project3
         }
 
         //Updates people's attributes
+        //TO DO: Chance to die
         //After a certain amount of time, people should exit quarantine
-        //Chance to die
-        public bool Update(int currentTime, int hoursQuarantineLasts)
+        //After a certaom amount of time, people no longer have the disease
+        public void Update()
         {
-            // If the person is not in quarantine or has already been quarantined for more than the specified number of hours, return true
-            if (!IsQuarantined || currentTime - QuarantineStartTime > hoursQuarantineLasts)
+            //Determines if someone dies
+            if (IsInfected) 
             {
-                return true;
+                Random random = new Random();
+                double deathChance = random.NextDouble();
+                if (deathChance > config.DeathChance)
+                {
+                    IsDead= true;
+                }
             }
 
-            // Otherwise, the quarantine has not ended, return false
-            return false;
+
+
+            //Determines if someone leaves quarantine
+            if (IsQuarantined)
+            {
+                QuarantineTime++;
+                if (QuarantineTime >= config.QuarantineHours)
+                {
+                    IsQuarantined=false;
+                    QuarantineTime=0;
+                }
+            }
+
+            //Determines if someone still has the disease
+            if (IsInfected)
+            {
+                InfectionTime++;
+                //If they've been infected for the duration the disease lasts, they no longer are infected
+                if (InfectionTime >= config.DiseaseHours)
+                {
+                    IsInfected= false;
+                    InfectionTime= 0;
+                }
+            }
         }
 
         //Determines if someone can spread the disease
@@ -105,4 +141,6 @@ namespace Project3
         }
 
     }
+
+    
 }

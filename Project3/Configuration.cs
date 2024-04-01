@@ -165,7 +165,7 @@ namespace Project3
         }
 
         //Generates people based on configuration settings
-        public List<Person> GeneratePeople(int peopleCount)
+        public List<Person> GeneratePeople(int peopleCount, Configuration config)
         {
             //Create a list of people
             List<Person> people = new List<Person>();
@@ -174,7 +174,7 @@ namespace Project3
 
             for (int i = 0; i < peopleCount; i++)
             {
-
+                
                 string id = $"Person_{i}";
                 //People may begin travelling between hours 0-23
                 int travelStartTime = rand.Next(0, 24);
@@ -192,10 +192,13 @@ namespace Project3
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = TravelChance;
 
+                
+
                 //Create person object
                 Person person = new Person(id, travelStartTime, travelEndTime, isInfected,
                                             infectionCount, infectionSpreadCount, isDead,
-                                            isQuarantined, quarantineChance, travelChance);
+                                            isQuarantined, quarantineChance, travelChance, 0, 0, config);
+                
                 //Generated people are added to a list
                 people.Add(person);
             }
