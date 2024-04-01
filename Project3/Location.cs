@@ -18,63 +18,47 @@ namespace Project3
         public string Id { get; set; }
         public ICollection<Person> people { get; set; }
         public ICollection<Location> neighbors { get; set; }
+        public List<int> populationSizes { get; set; }
+
+        public List<int> SickCount { get; set; }
+
 
         public Location(string id)
         {
             Id = id;
             people = new List<Person>();
             neighbors = new List<Location>();
+            populationSizes= new List<int>();
+            SickCount = new List<int>();
 
         }
+
 
         //put in person? :(
         //Method to spread the disease.
         //***TO DO: add chance to quarantine***
         public void SpreadDisease(double spreadChance)
         {
-            //for all people created
-            foreach (Person person in people)
-
-                //Iterates through each pair of people
-                for (int i = 0; i < people.Count; i++)
+            Random random = new Random();
+            foreach (Person otherPerson in people)
+            {
+                if (currentPerson == otherPerson)
                 {
-                    for (int j = i + 1; j < people.Count; j++)
+                    continue;
+                }
+
+                int chance = random.Next(0, 100);
+                if (chance > spreadChance && !otherPerson.IsQuarantined)
+                {
+                    otherPerson.IsInfected= true;
+                    otherPerson.InfectionCount++;
+                    currentPerson.InfectionSpreadCount++;
+
+                    //Determines if the newly infected person will quarantine
+                    chance = random.Next(0, 100);
+                    if (otherPerson.QuarantineChance < chance)
                     {
-                        Person person1 = people.ElementAt(i);
-                        Person person2 = people.ElementAt(j);
-
-                        Random random = new Random();
-
-                        double chance = random.NextDouble();
-
-                        //Checks for the chance to spread disease
-                        if (person1.CanSpread() && chance > spreadChance && !person2.IsQuarantined)
-                        {
-                            person2.IsInfected = true;
-                            person2.InfectionCount++;
-                            person1.InfectionSpreadCount++;
-
-                            //Determines if the infected person will quarantine
-                            chance = random.NextDouble();
-                            if (person2.QuarantineChance < chance)
-                            {
-                                person2.IsQuarantined = true;
-                            }
-                        }
-                        //Checks if person2 spreads to person1
-                        else if (person2.CanSpread() && chance > spreadChance && !person1.IsQuarantined)
-                        {
-                            person1.IsInfected = true;
-                            person1.InfectionCount++;
-                            person2.InfectionSpreadCount++;
-
-                            //Determines if the infected person will quarantine
-                            chance = random.NextDouble();
-                            if (person1.QuarantineChance < chance)
-                            {
-                                person1.IsQuarantined = true;
-                            }
-                        }
+                        otherPerson.IsQuarantined= true;
                     }
                 }
         }
@@ -82,51 +66,49 @@ namespace Project3
         //Method to continue to travel after quarantine.
         public void TravelAfterQuarantine()
         {
-            foreach (Person person in people)
+            Random random = new Random();
+            if (random.Next(0, 100) > person.TravelChance)
             {
-                if (person.IsQuarantined)
-                {
-                    Random rand = new Random();
-                    double randomValue = rand.Next(1, 101);
+                int pickNeighbor = new Random().Next(neighbors.Count());
+                Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
 
-                    if (randomValue < person.QuarantineChance)
-                    {
-                        person.IsQuarantined = false;
-                    }
-                }
+
+                chosenNeighbor.people.Add(person);
+                people.Remove(person);
             }
         }
 
-        //Moves a person to a neighbor location
-        public void MovePeople()
+        //Updates the population size
+        public void UpdatePopSize()
         {
+            populationSizes.Add(people.Count);
+        }
+
+        //Averages the population sizes
+        public double AveragePopulation() 
+        {
+            return populationSizes.Average();
+        }
+
+        //Stores how many infected people at a location at that hour in a list
+        public void UpdateSickCount()
+        {
+            int sickCount = 0;
             foreach (Person person in people)
             {
-                double chance = new Random().NextDouble();
-
-                if (chance > person.TravelChance)
+                if (person.IsInfected)
                 {
-                    foreach (var neighbor in neighbors)
-                    {
-                        Random rand = new Random();
-                        double randomValue = rand.Next(1, 101);
-                        if (randomValue < person.TravelChance)
-                        {
-                            neighbor.people.Add(person);
-                            people.Remove(person);
-                            break;
-                        }
-                    }
-
-                    //Pick a neighbor location for someone to move to
-                    int pickNeighbor = new Random().Next(neighbors.Count());
-                    Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
-
-                    //Move that person to their new location
-                    chosenNeighbor.people.Add(person);
-                    people.Remove(person);
+                    sickCount++;
                 }
             }
+            SickCount.Add(sickCount);
+        }
+
+        //Averages the amount of infected people at the location
+        public double AverageInfected()
+        {
+            return SickCount.Average();
         }
     }
 }
+
