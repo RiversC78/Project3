@@ -13,6 +13,9 @@ once the quarantine period is complete
  */
 namespace Project3
 {
+    /// <summary>
+    /// Class to hold location information about the people at a certain location and the locations directly next to itself
+    /// </summary>
     public class Location
     {
         public string Id { get; set; }
@@ -23,6 +26,7 @@ namespace Project3
         public List<int> SickCount { get; set; }
 
 
+        //Location constructor
         public Location(string id)
         {
             Id = id;
@@ -57,9 +61,7 @@ namespace Project3
                         otherPerson.IsQuarantined= true;
                     }
                 }
-            }
-        }
-
+        }//end SpreadDisease
         //Moves a person to a neighboring location
         public void MovePeople(Person person)
         {
@@ -107,3 +109,4 @@ namespace Project3
         }
     }
 }
+

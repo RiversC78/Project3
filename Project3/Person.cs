@@ -24,6 +24,7 @@ o The configuration file will provide a mean and a standard deviation.
 o This value must be randomly generated based on a normal random distribution as
 defined by the configuration file.
  */
+
 using System.Data;
 
 namespace Project3
@@ -56,7 +57,8 @@ namespace Project3
         public int QuarantineStartTime { get; set; }
 
         //Track how long someone has been infected
-        public int InfectionTime { get; set; }
+        //public int InfectionTime { get; set; }
+
 
         //Track how long someone has been in quarantine
         public int QuarantineTime { get; set; }
@@ -81,8 +83,6 @@ namespace Project3
             QuarantineTime = quarantineTime;
 
             this.config = config;
-
-
         }
         
         //Determines if a person will move
@@ -138,7 +138,6 @@ namespace Project3
             return !IsQuarantined && !IsDead && IsInfected;
         }
 
-    }
-
-    
+    }   
 }
+

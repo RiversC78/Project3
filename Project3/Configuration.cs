@@ -11,7 +11,7 @@ simulation. From the configuration file, the user should be able to adjust the f
  How long the simulation should last.
  The percent chance that a person will travel each hour of the simulation.
 (Note: From the configurable settings above, you may extrapolate additional requirements.
- */
+*/
 using System.Text.RegularExpressions;
 
 namespace Project3
@@ -26,24 +26,28 @@ namespace Project3
         public int MeanPopulationSize { get; set; }
         //Standard Deviation of the population size of a location at the start of the simulation
         public int StDevPopulationSize { get; set; }
-        //Percent chance of a disease spreading to another person
+        //Percent chance of a disease spreading to another person value between 0-100
         public double SpreadChance { get; set; }
-        //Percent chance of a disease flagging someone as dead
+        //Percent chance of a disease flagging someone as dead value between 0-100 as a percentage
         public double DeathChance { get; set; }
         //The number of hours the disease lasts
         public int DiseaseHours { get; set; }
         //The number of hours quarantine lasts
         public int QuarantineHours { get; set; }
-        //Mean percent chance someone enters quarantine
+        //Mean percent chance someone enters quarantine value between 0-100 as a percentage
         public double MeanQuarantineChance { get; set; }
-        //Standard Deviation of the percent chance of a person entering quarantine
+        //Standard Deviation of the percent chance of a person entering quarantine value between 0-100 as a percentage
         public double StDevQuarantineChance { get; set; }
         //How long the simulation lasts
         public int SimulationMinutes { get; set; }
-        //Percent chance a person will travel each hour of the simulation
+        //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
 
-        //Method to load configuration from a file
+        /// <summary>
+        /// method to load information from a config file
+        /// </summary>
+        /// <param name="filePath">filepath to config file</param>
+        /// <exception cref="ArgumentException"></exception>
         public void LoadConfiguration(string filePath)
         {
             try
@@ -72,7 +76,6 @@ namespace Project3
                             {
                                 continue;
                             }
-
                             else if (Regex.IsMatch(line, @"^\s*$"))
                             {
                                 continue;
@@ -108,14 +111,14 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                MeanQuarantineChance = int.Parse(propertySet);
+                                MeanQuarantineChance = double.Parse(propertySet);
                             }
                             //set StDevQuarantineChance
                             else if (Regex.IsMatch(line, @"standDevChanceQuarantine"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                StDevQuarantineChance = int.Parse(propertySet);
+                                StDevQuarantineChance = double.Parse(propertySet);
                             }
                             //set Simulation Minutes 
                             else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
@@ -129,14 +132,14 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                TravelChance = int.Parse(propertySet);
+                                TravelChance = double.Parse(propertySet);
                             }
                             //set SpreadChance
                             else if (Regex.IsMatch(line, @"chanceDiseaseSpread"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                SpreadChance = int.Parse(propertySet);
+                                SpreadChance = double.Parse(propertySet);
                             }
                             //set MeanPopulationSize
                             else if (Regex.IsMatch(line, @"meanPopSize"))
@@ -150,7 +153,7 @@ namespace Project3
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                StDevPopulationSize = int.Parse(propertySet);
+                                StDevPopulationSize = (int)double.Parse(propertySet);
                             }
                         }
                     }
@@ -166,6 +169,7 @@ namespace Project3
 
         //Generates people based on configuration settings
         public List<Person> GeneratePeople(int peopleCount, Configuration config)
+
         {
             //Create a list of people
             List<Person> people = new List<Person>();
@@ -174,7 +178,6 @@ namespace Project3
 
             for (int i = 0; i < peopleCount; i++)
             {
-                
                 string id = $"Person_{i}";
                 //People may begin travelling between hours 0-23
                 int travelStartTime = rand.Next(0, 24);
@@ -199,6 +202,7 @@ namespace Project3
                                             infectionCount, infectionSpreadCount, isDead,
                                             isQuarantined, quarantineChance, travelChance, 0, 0, config);
                 
+
                 //Generated people are added to a list
                 people.Add(person);
             }
@@ -244,5 +248,33 @@ namespace Project3
             double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
             return randNormal;
         }
+
+
+
+        //Generates numbers using a normal distribution
+        public static double RandomGaussian()
+        {
+            Random rand = new Random();
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform source line 2 SourcesFile
+            return randStdNormal;
+        }
+
     }
-}
+
+    // Extension method to generate Gaussian random numbers
+    public static class RandomExtensions
+    {
+        public static double NextGaussian(this Random rand, double mean, double stdDev)
+        {
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                         Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
+            double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
+            return randNormal;
+        }
+    }//end class
+}//end namespace
+

@@ -1,7 +1,16 @@
-﻿namespace Project3
+﻿using System.Diagnostics;
+
+namespace Project3
 {
+    /// <summary>
+    /// container for main program
+    /// </summary>
     internal class Program
     {
+        /// <summary>
+        /// container for main program entry point 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
 
@@ -24,7 +33,7 @@
             int deadCount = 0;
             int infectedCount = 0;
             int QuarantinedCount = 0;
-
+          
             //load in configuration information 
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
@@ -52,7 +61,6 @@
 
             List<Person> peopleToMove = new List<Person>();
 
-
             //Runs the simulation until the total simulation time reaches the configuration's total time
             while (totalSimulationMinutes < config.SimulationMinutes)
             {
@@ -65,6 +73,7 @@
                         {
                             //**TODO: Update still needs to be fixed. 
                             //Updates how long someone has been in quarantine
+
                             person.Update();
 
                             //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
@@ -334,3 +343,4 @@
 
     }
 }
+
