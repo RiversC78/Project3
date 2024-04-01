@@ -13,6 +13,9 @@ once the quarantine period is complete
  */
 namespace Project3
 {
+    /// <summary>
+    /// Class to hold location information about the people at a certain location and the locations directly next to itself
+    /// </summary>
     public class Location
     {
         public string Id { get; set; }
@@ -23,21 +26,18 @@ namespace Project3
         public List<int> SickCount { get; set; }
 
 
+        //Location constructor
         public Location(string id)
         {
             Id = id;
             people = new List<Person>();
             neighbors = new List<Location>();
-            populationSizes= new List<int>();
+            populationSizes = new List<int>();
             SickCount = new List<int>();
 
         }
 
-
-        //put in person? :(
-        //Method to spread the disease.
-        //***TO DO: add chance to quarantine***
-        public void SpreadDisease(double spreadChance)
+        public void SpreadDisease(double spreadChance, Person currentPerson)
         {
             Random random = new Random();
             foreach (Person otherPerson in people)
@@ -50,7 +50,7 @@ namespace Project3
                 int chance = random.Next(0, 100);
                 if (chance > spreadChance && !otherPerson.IsQuarantined)
                 {
-                    otherPerson.IsInfected= true;
+                    otherPerson.IsInfected = true;
                     otherPerson.InfectionCount++;
                     currentPerson.InfectionSpreadCount++;
 
@@ -58,20 +58,19 @@ namespace Project3
                     chance = random.Next(0, 100);
                     if (otherPerson.QuarantineChance < chance)
                     {
-                        otherPerson.IsQuarantined= true;
+                        otherPerson.IsQuarantined = true;
                     }
                 }
-        }
-
-        //Method to continue to travel after quarantine.
-        public void TravelAfterQuarantine()
+            }
+        }//end SpreadDisease
+         //Moves a person to a neighboring location
+        public void MovePeople(Person person)
         {
             Random random = new Random();
             if (random.Next(0, 100) > person.TravelChance)
             {
                 int pickNeighbor = new Random().Next(neighbors.Count());
                 Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
-
 
                 chosenNeighbor.people.Add(person);
                 people.Remove(person);
@@ -85,7 +84,7 @@ namespace Project3
         }
 
         //Averages the population sizes
-        public double AveragePopulation() 
+        public double AveragePopulation()
         {
             return populationSizes.Average();
         }
@@ -111,4 +110,3 @@ namespace Project3
         }
     }
 }
-

@@ -1,4 +1,5 @@
-﻿/*The Configuration class reads in data from a file that determines the parameters of the
+﻿
+/*The Configuration class reads in data from a file that determines the parameters of the
 simulation. From the configuration file, the user should be able to adjust the following:
  The mean population size of a location at the start of the simulation.
  The standard deviation of the population size of a location at the start of the simulation.
@@ -195,13 +196,13 @@ namespace Project3
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = TravelChance;
 
-                
+
 
                 //Create person object
                 Person person = new Person(id, travelStartTime, travelEndTime, isInfected,
                                             infectionCount, infectionSpreadCount, isDead,
                                             isQuarantined, quarantineChance, travelChance, 0, 0, config);
-                
+
 
                 //Generated people are added to a list
                 people.Add(person);
@@ -262,19 +263,4 @@ namespace Project3
         }
 
     }
-
-    // Extension method to generate Gaussian random numbers
-    public static class RandomExtensions
-    {
-        public static double NextGaussian(this Random rand, double mean, double stdDev)
-        {
-            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
-            double u2 = 1.0 - rand.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
-                         Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
-            double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
-            return randNormal;
-        }
-    }//end class
 }//end namespace
-

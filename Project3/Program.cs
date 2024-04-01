@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿
+using System.Diagnostics;
 
 namespace Project3
 {
@@ -33,7 +34,7 @@ namespace Project3
             int deadCount = 0;
             int infectedCount = 0;
             int QuarantinedCount = 0;
-          
+
             //load in configuration information 
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
@@ -157,7 +158,7 @@ namespace Project3
                     peopleToMove.Clear();
 
                     //Reset variable
-                    infectedThisHour= 0;
+                    infectedThisHour = 0;
 
 
                     //Data to log to CSV:
@@ -343,4 +344,3 @@ namespace Project3
 
     }
 }
-
