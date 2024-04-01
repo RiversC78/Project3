@@ -87,7 +87,9 @@ namespace Project3
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
 
-                                DeathChance = double.Parse(propertySet); 
+                                //DeathChance = int.Parse(propertySet);
+
+                                DeathChance = double.Parse(propertySet);
 
                             }
                             //set DiseaseHours
@@ -166,7 +168,8 @@ namespace Project3
         }
 
         //Generates people based on configuration settings
-        public List<Person> GeneratePeople(int peopleCount)
+        public List<Person> GeneratePeople(int peopleCount, Configuration config)
+
         {
             //Create a list of people
             List<Person> people = new List<Person>();
@@ -175,7 +178,6 @@ namespace Project3
 
             for (int i = 0; i < peopleCount; i++)
             {
-
                 string id = $"Person_{i}";
                 //People may begin travelling between hours 0-23
                 int travelStartTime = rand.Next(0, 24);
@@ -193,10 +195,14 @@ namespace Project3
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = TravelChance;
 
+                
+
                 //Create person object
                 Person person = new Person(id, travelStartTime, travelEndTime, isInfected,
                                             infectionCount, infectionSpreadCount, isDead,
-                                            isQuarantined, quarantineChance, travelChance);
+                                            isQuarantined, quarantineChance, travelChance, 0, 0, config);
+                
+
                 //Generated people are added to a list
                 people.Add(person);
             }
@@ -214,6 +220,33 @@ namespace Project3
             double chance = rand.NextGaussian(mean, stdDev);
             //Chance clamped between 0 and 1
             return Math.Max(0, Math.Min(1, chance));
+        }
+
+
+
+        //Generates numbers using a normal distribution
+        public static double RandomGaussian()
+        {
+            Random rand = new Random();
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
+            return randStdNormal;
+        }
+
+    }
+
+    // Extension method to generate Gaussian random numbers
+    public static class RandomExtensions
+    {
+        public static double NextGaussian(this Random rand, double mean, double stdDev)
+        {
+            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                         Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
+            double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
+            return randNormal;
         }
 
 
