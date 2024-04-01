@@ -92,7 +92,7 @@ namespace Project3
         }
 
         //Updates people's attributes
-        //TO DO: Chance to die
+        //Chance to die
         //After a certain amount of time, people should exit quarantine
         //After a certaom amount of time, people no longer have the disease
         public void Update()
@@ -107,8 +107,6 @@ namespace Project3
                     IsDead= true;
                 }
             }
-
-
 
             //Determines if someone leaves quarantine
             if (IsQuarantined)

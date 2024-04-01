@@ -2,8 +2,6 @@
 {
     internal class Program
     {
-        //Variable for the StreamWriter
-
         static void Main(string[] args)
         {
 
@@ -45,7 +43,6 @@
             List<Location> locations = new List<Location> { location1, location2 };
 
             int totalSimulationMinutes = 0;
-            int currentTime = 0;
 
             List<Person> peopleToMove = new List<Person>();
 
@@ -175,7 +172,6 @@
 
                     //Increments the total simulation minutes by an hour
                     totalSimulationMinutes += 60;
-
 
 
                     //When the total simulation minutes reaches the time specified in the configuration, it ends
