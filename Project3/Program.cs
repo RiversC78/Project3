@@ -33,8 +33,14 @@
             Location location1 = CreateInfectedLocation("location 1", config);
             Location location2 = CreateLocation("location 2", config);
 
-            //used for final report at the end of the simulation
+            //variables used for final report at the end of the simulation
             int totalPeople = location1.people.Count + location2.people.Count;
+            int totalDeaths = 0;
+            int infectedCountPercent = 0;
+            int infectedThisHour = 0;
+            int totalInfected = 0;
+            List<int> infectedPerHour = new List<int>();
+            List<int> infectionsPerPerson = new List<int>();
 
             //The locations are neighbors
             location1.neighbors.Add(location2);
@@ -119,6 +125,10 @@
                             if (person.IsInfected)
                             {
                                 infectedCount++;
+                                infectedThisHour++;
+                                totalInfected++;
+                                //Adds to amount someone has spread disease to a list, used for later calculation
+                                infectionsPerPerson.Add(person.InfectionSpreadCount);
                             }
 
                             if (person.IsQuarantined)
@@ -126,9 +136,19 @@
                                 QuarantinedCount++;
                             }
                         }
+                        //Updates the population sizes for final report calculations
+                        location.UpdatePopSize();
+                        //Updates the amount of sick people at each location
+                        location.UpdateSickCount();
                     }
+                    //Adds to list to calculate the average infected per hour
+                    infectedPerHour.Add(infectedThisHour);
+
                     //Resets the list of people to move
                     peopleToMove.Clear();
+
+                    //Reset variable
+                    infectedThisHour= 0;
 
 
                     //Data to log to CSV:
@@ -145,7 +165,7 @@
                         writer.WriteLine($"--- Day {day}  - Hour {hour} ---");
                         if (mostInfectedPerson != null)
                         {
-                            writer.WriteLine($"  -  Person who has contacted the most disease: Person {mostInfectedPerson.Id}");
+                            writer.WriteLine($"  -  Person who has contacted the most disease: {mostInfectedPerson.Id}");
                         }
                         else
                         {
@@ -153,7 +173,7 @@
                         }
                         if (highestSpreadCount != null)
                         {
-                            writer.WriteLine($"  -  Person who has spread the most disease: Person {highestSpreadCount.Id}");
+                            writer.WriteLine($"  -  Person who has spread the most disease: {highestSpreadCount.Id}");
                         }
                         else
                         {
@@ -181,6 +201,33 @@
                     }
                 }
             }
+
+            //Finds data for end report
+            foreach (Location location in locations)
+            {
+                foreach (Person person in location.people)
+                {
+                    if (person.IsDead)
+                    {
+                        totalDeaths++;
+                    }
+                    if (person.IsInfected)
+                    {
+                        infectedCountPercent++;
+                    }
+                }
+            }
+            //Calculates the percentage of people infected
+            double infectionPercentage = (double)infectedCountPercent / totalPeople * 100;
+            //Calculates the percentage of people are dead
+            double deathPercent = (double)totalDeaths / totalPeople * 100;
+            //Calculates the average percent of people infected each hour
+            double averageInfectedPerHour = infectedPerHour.Average();
+            //Calculates the average number of people an infected person spread the disease to
+            double averageInfectionsPerPerson = infectionsPerPerson.Average();
+            //Finds the maximum number of infections caused by a person
+            int maxInfectionPerPerson = infectionsPerPerson.Max();
+
             //Once the simulation is complete, it should generate a report with the following information:
             // How long did the simulation run
             // How many people were infected over the course of the simulation
@@ -198,24 +245,24 @@
 
             Console.WriteLine(" ---- Final Report: ");
             Console.WriteLine($"Total run time: {totalSimulationMinutes} minutes");
-            //TODO: Still needs total infected over the course of the simulation
-            Console.WriteLine($"Total infected: ");
-            Console.WriteLine($"Total deaths: ");
-            //TODO: still need percent infected
-            Console.WriteLine($"Percent infected: ");
-            Console.WriteLine($"Percent dead: ");
-            //TODO: still need percent infected on average
-            Console.WriteLine($"Percent infected on average: ");
-            //TODO: Still need this number
-            Console.WriteLine($"Average number of people an infected person spread to: ");
-            //TODO: still need this number
-            Console.WriteLine($"Maximum number of people an infected person spread to: ");
+            Console.WriteLine($"Total infected: {totalInfected}");
+            Console.WriteLine($"Total deaths: {totalDeaths}");
+            Console.WriteLine($"Percent infected: {infectionPercentage}");
+            Console.WriteLine($"Percent dead: {deathPercent}");
+            Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
+            Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
+            Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
 
             foreach (Location location in locations)
             {
-                Console.WriteLine($" ---- Location ");
-                Console.WriteLine($"Average population size: ");
-                Console.WriteLine($"Average percent of people sick with disease: ");
+                double avgPop = location.AveragePopulation();
+                double avgInfected = location.AverageInfected();
+                double avgQuarantined;
+
+                Console.WriteLine($" ---- Location {location.Id}");
+                Console.WriteLine($"Average population size: {avgPop}");
+                //TODO: Fix issue with no one infected at location 2
+                Console.WriteLine($"Average percent of people sick with disease: {avgInfected}");
                 Console.WriteLine($"Average percent of people in quarantine: ");
             }
 
@@ -284,5 +331,6 @@
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
             return randStdNormal;
         }
+
     }
 }

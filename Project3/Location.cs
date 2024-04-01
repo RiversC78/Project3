@@ -18,12 +18,18 @@ namespace Project3
         public string Id { get; set; }
         public ICollection<Person> people { get; set; }
         public ICollection<Location> neighbors { get; set; }
+        public List<int> populationSizes { get; set; }
+
+        public List<int> SickCount { get; set; }
+
 
         public Location(string id)
         {
             Id = id;
             people = new List<Person>();
             neighbors = new List<Location>();
+            populationSizes= new List<int>();
+            SickCount = new List<int>();
 
         }
 
@@ -68,5 +74,36 @@ namespace Project3
             }
         }
 
+        //Updates the population size
+        public void UpdatePopSize()
+        {
+            populationSizes.Add(people.Count);
+        }
+
+        //Averages the population sizes
+        public double AveragePopulation() 
+        {
+            return populationSizes.Average();
+        }
+
+        //Stores how many infected people at a location at that hour in a list
+        public void UpdateSickCount()
+        {
+            int sickCount = 0;
+            foreach (Person person in people)
+            {
+                if (person.IsInfected)
+                {
+                    sickCount++;
+                }
+            }
+            SickCount.Add(sickCount);
+        }
+
+        //Averages the amount of infected people at the location
+        public double AverageInfected()
+        {
+            return SickCount.Average();
+        }
     }
 }
