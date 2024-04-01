@@ -13,9 +13,6 @@ once the quarantine period is complete
  */
 namespace Project3
 {
-    /// <summary>
-    /// Class to hold location information about the people at a certain location and the locations directly next to itself
-    /// </summary>
     public class Location
     {
         public string Id { get; set; }
@@ -26,7 +23,6 @@ namespace Project3
         public List<int> SickCount { get; set; }
 
 
-        //Location constructor
         public Location(string id)
         {
             Id = id;
@@ -37,7 +33,11 @@ namespace Project3
 
         }
 
-        public void SpreadDisease(double spreadChance, Person currentPerson)
+
+        //put in person? :(
+        //Method to spread the disease.
+        //***TO DO: add chance to quarantine***
+        public void SpreadDisease(double spreadChance)
         {
             Random random = new Random();
             foreach (Person otherPerson in people)
@@ -61,15 +61,17 @@ namespace Project3
                         otherPerson.IsQuarantined= true;
                     }
                 }
-        }//end SpreadDisease
-        //Moves a person to a neighboring location
-        public void MovePeople(Person person)
+        }
+
+        //Method to continue to travel after quarantine.
+        public void TravelAfterQuarantine()
         {
             Random random = new Random();
             if (random.Next(0, 100) > person.TravelChance)
             {
                 int pickNeighbor = new Random().Next(neighbors.Count());
                 Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
+
 
                 chosenNeighbor.people.Add(person);
                 people.Remove(person);
