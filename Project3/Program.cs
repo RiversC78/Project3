@@ -39,7 +39,7 @@
 
             //Create two locations and a list of all locations 
             Location location1 = Location.CreateInfectedLocation("location 1", config);
-            Location location2 = Locaiton.CreateLocation("location 2", config);
+            Location location2 = Location.CreateLocation("location 2", config);
 
             //variables used for final report at the end of the simulation
             int totalPeople = location1.people.Count + location2.people.Count;
