@@ -57,6 +57,7 @@
             List<Location> locations = new List<Location> { location1, location2 };
 
             int totalSimulationHours = 0;
+            int totalCompletedSimDays = 0;
 
             List<Person> peopleToMove = new List<Person>();
 
@@ -198,13 +199,17 @@
                     infectedCount = 0;
                     QuarantinedCount = 0;
 
+                    //increment total sim hours as an hour has passed
+                    totalSimulationHours++;
 
                     //When the total simulation hours reaches the time specified in the configuration, it ends
                     if (totalSimulationHours >= config.SimulationHours)
                     {
                         break;
                     }
+
                 }//end hour 
+                totalCompletedSimDays++; 
             }//end main sim while loop
 
             //Finds data for end report
