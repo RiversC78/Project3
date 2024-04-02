@@ -166,11 +166,15 @@ namespace Project3
                 Console.WriteLine("Unable to load configuration");
             }
 
-        }
+        }//end LoadConfiguration
 
-        //Generates people based on configuration settings
+        /// <summary>
+        /// Generates people based on configuration settings
+        /// </summary>
+        /// <param name="peopleCount">number of people to generate</param>
+        /// <param name="config">configuration file attributes</param>
+        /// <returns>list of people created</returns>
         public List<Person> GeneratePeople(int peopleCount, Configuration config)
-
         {
             //Create a list of people
             List<Person> people = new List<Person>();
@@ -209,8 +213,12 @@ namespace Project3
                 people.Add(person);
             }
             return people;
-        }
+        }//end GeneratePeople
 
+        /// <summary>
+        /// Creates the chance that someone will quarantine or not with statistics
+        /// </summary>
+        /// <returns></returns>
         private double GenerateQuarantineChance()
         {
             //Generate quarantine chance based on a normal random distribution
@@ -222,44 +230,6 @@ namespace Project3
             double chance = rand.NextGaussian(mean, stdDev);
             //Chance clamped between 0 and 100, to be used like a percentage
             return chance; 
-        }
-
-        //Generates numbers using a normal distribution
-        public static double RandomGaussian()
-        {
-            Random rand = new Random();
-            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
-            double u2 = 1.0 - rand.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
-            return randStdNormal;
-        }
-
-    }
-
-    // Extension method to generate Gaussian random numbers
-    public static class RandomExtensions
-    {
-        public static double NextGaussian(this Random rand, double mean, double stdDev)
-        {
-            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
-            double u2 = 1.0 - rand.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
-                         Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
-            double randNormal = mean + stdDev * randStdNormal; // Apply the transform to get normal distribution
-            return randNormal;
-        }
-
-
-
-        //Generates numbers using a normal distribution
-        public static double RandomGaussian()
-        {
-            Random rand = new Random();
-            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
-            double u2 = 1.0 - rand.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform source line 2 SourcesFile
-            return randStdNormal;
-        }
-
+        }//end GenerateQuarantineChance
     }
 }//end namespace

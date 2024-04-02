@@ -1,5 +1,4 @@
-﻿
-/*The Person class represents a single person that exist within the simulation. Each person should
+﻿/*The Person class represents a single person that exist within the simulation. Each person should
 have at least the following attributes:
  string Id - A person’s unique identifier to assist with debugging and analysis.
  int TravelStartTime – The time of day on a 24-hour clock when this person may start
@@ -25,9 +24,6 @@ o The configuration file will provide a mean and a standard deviation.
 o This value must be randomly generated based on a normal random distribution as
 defined by the configuration file.
 */
-
-using System.Data;
-using System.Text;
 
 namespace Project3
 {
@@ -85,18 +81,22 @@ namespace Project3
             QuarantineTime = quarantineTime;
 
             this.config = config;
-        }
+        }//end Person constructor
 
         //Determines if a person will move
+        /// <summary>
+        /// Determines if a person will move
+        /// </summary>
+        /// <param name="currentHour">returns current hour of the day in the sim</param>
+        /// <returns>bool on if person will move or not</returns>
         public bool ShouldMove(int currentHour)
         {
             return !IsQuarantined && !IsDead && currentHour >= TravelStartTime && currentHour <= TravelEndTime;
-        }
+        }//end ShouldMove
 
-        //Updates people's attributes
-        //Chance to die
-        //After a certain amount of time, people should exit quarantine
-        //After a certaom amount of time, people no longer have the disease
+        /// <summary>
+        /// Updates attributes, gives people a chance to die, exit quarantine after some time, and recover from disease after a certain amount of time if they're not dead
+        /// </summary>
         public void Update()
         {
             //Determines if someone dies
@@ -132,14 +132,21 @@ namespace Project3
                 //    InfectionTime = 0;
                 //}
             }
-        }
+        }//end Update
 
-        //Determines if someone can spread the disease
+        /// <summary>
+        /// Determines if someone can spread the disease
+        /// </summary>
+        /// <returns>true if able to spread disease, false if not</returns>
         public bool CanSpread()
         {
             return !IsQuarantined && !IsDead && IsInfected;
-        }
-        //method to determine if everyone that is alive no longer has the disease and if it is still spreadable or if everyone infected quarantined or is dead - checks by location
+        }//end CanSpread
+        /// <summary>
+        /// method to determine if everyone that is alive no longer has the disease and if it is still spreadable or if everyone infected quarantined or is dead - checks by location
+        /// </summary>
+        /// <param name="locations">list of all active locations</param>
+        /// <returns>true if everyone is dead and false if not</returns>
         public static bool IsEveryoneDead(List<Location> locations)
         {
             //check each location
@@ -170,13 +177,16 @@ namespace Project3
             }
             //if not all locations are empty return false
             return false;
-        }
-        //Randomly picks a person to have the disease
+        }//end IsEveryoneDead
+        /// <summary>
+        /// Randomly picks a starter person to have the disease
+        /// </summary>
+        /// <param name="people">list of people to pick from for patient zero</param>
         public static void PatientZero(List<Person> people)
         {
             Random random = new Random();
             int patientZero = random.Next(0, people.Count);
             people[patientZero].IsInfected = true;
-        }
-    }
-}
+        }//end PatientZero
+    }//end class
+}//end namespace
