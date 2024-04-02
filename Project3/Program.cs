@@ -59,7 +59,6 @@ namespace Project3
             List<Location> locations = new List<Location> { location1, location2 };
 
             int totalSimulationHours = 0;
-            int totalCompletedSimDays = 0;
 
             List<Person> peopleToMove = new List<Person>();
 
@@ -218,7 +217,7 @@ namespace Project3
                         goto FinalReport; 
                     }
                 }//end hour 
-                totalCompletedSimDays++; 
+                day++; 
             }//end main sim while loop
             //end stopwatch time for total sim 
             stopwatch.Stop();
