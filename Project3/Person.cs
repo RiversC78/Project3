@@ -55,7 +55,7 @@ namespace Project3
         public int QuarantineStartTime { get; set; }
 
         //Track how long someone has been infected
-        //public int InfectionTime { get; set; }
+        public int InfectionTime { get; set; }
 
 
         //Track how long someone has been in quarantine
@@ -77,7 +77,7 @@ namespace Project3
             IsQuarantined = isQuarantined;
             QuarantineChance = quarantineChance;
             TravelChance = travelChance;
-            //InfectionTime = infectionTime;
+            InfectionTime = infectionTime;
             QuarantineTime = quarantineTime;
 
             this.config = config;
@@ -97,40 +97,40 @@ namespace Project3
         /// <summary>
         /// Updates attributes, gives people a chance to die, exit quarantine after some time, and recover from disease after a certain amount of time if they're not dead
         /// </summary>
-        public void Update()
+        public void Update(Person person)
         {
             //Determines if someone dies
-            if (IsInfected)
+            if (person.IsInfected)
             {
                 Random random = new Random();
-                double deathChance = random.NextDouble();
+                double deathChance = random.Next(0,101);
                 if (deathChance > config.DeathChance)
                 {
-                    IsDead = true;
+                    person.IsDead = true;
                 }
             }
 
             //Determines if someone leaves quarantine
-            if (IsQuarantined)
+            if (person.IsQuarantined)
             {
-                QuarantineTime++;
-                if (QuarantineTime >= config.QuarantineHours)
+                person.QuarantineTime++;
+                if (person.QuarantineTime >= config.QuarantineHours)
                 {
-                    IsQuarantined = false;
-                    QuarantineTime = 0;
+                    person.IsQuarantined = false;
+                    person.QuarantineTime = 0;
                 }
             }
 
             //Determines if someone still has the disease
-            if (IsInfected)
+            if (person.IsInfected)
             {
-                //InfectionTime++;
+                person.InfectionTime++;
                 ////If they've been infected for the duration the disease lasts, they no longer are infected
-                //if (InfectionTime >= config.DiseaseHours)
-                //{
-                //    IsInfected = false;
-                //    InfectionTime = 0;
-                //}
+                if (person.InfectionTime >= config.DiseaseHours)
+                {
+                    person.IsInfected = false;
+                    person.InfectionTime = 0;
+                }
             }
         }//end Update
 
