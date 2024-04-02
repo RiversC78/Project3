@@ -122,7 +122,7 @@ namespace Project3
                                 StDevQuarantineChance = double.Parse(propertySet);
                             }
                             //set Simulation Hours 
-                            else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
+                            else if (Regex.IsMatch(line, @"durationOfSimHours"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();

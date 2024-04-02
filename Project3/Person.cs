@@ -103,7 +103,7 @@ namespace Project3
             if (IsInfected)
             {
                 Random random = new Random();
-                double deathChance = random.NextDouble();
+                double deathChance = random.Next(0,101);
                 if (deathChance > config.DeathChance)
                 {
                     IsDead = true;
