@@ -107,5 +107,46 @@ namespace Project3
         {
             return SickCount.Average();
         }
+        //Creates a location that has an infected person
+        public static Location CreateInfectedLocation(string locationId, Configuration config)
+        {
+            //Generate population size for the location based on mean and standard deviation
+            int populationSize = (int)Math.Round(config.MeanPopulationSize + (config.StDevPopulationSize * MathOperations.RandomGaussian()));
+
+            //Generate people for the location
+            List<Person> people = config.GeneratePeople(populationSize, config);
+
+            //Select a person to be patient zero
+            Person.PatientZero(people);
+
+            // Create the location
+            Location location = new Location(locationId);
+
+            foreach (Person person in people)
+            {
+                location.people.Add(person);
+            }
+
+            return location;
+        }
+        //Creates a location with a mean and standard deviation of people
+        public static Location CreateLocation(string locationId, Configuration config)
+        {
+            // Generate population size for the location based on mean and standard deviation
+            int populationSize = (int)Math.Round(config.MeanPopulationSize + (config.StDevPopulationSize * MathOperations.RandomGaussian()));
+
+            // Generate people for the location
+            List<Person> people = config.GeneratePeople(populationSize, config);
+
+            // Create the location
+            Location location = new Location(locationId);
+
+            foreach (Person person in people)
+            {
+                location.people.Add(person);
+            }
+
+            return location;
+        }
     }
 }

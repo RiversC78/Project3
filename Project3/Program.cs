@@ -38,8 +38,8 @@
             config.LoadConfiguration(filePath);
 
             //Create two locations and a list of all locations 
-            Location location1 = CreateInfectedLocation("location 1", config);
-            Location location2 = CreateLocation("location 2", config);
+            Location location1 = Location.CreateInfectedLocation("location 1", config);
+            Location location2 = Locaiton.CreateLocation("location 2", config);
 
             //variables used for final report at the end of the simulation
             int totalPeople = location1.people.Count + location2.people.Count;
@@ -286,64 +286,12 @@
         }
         //End of Main
 
-        //Creates a location with a mean and standard deviation of people
-        public static Location CreateLocation(string locationId, Configuration config)
-        {
-            // Generate population size for the location based on mean and standard deviation
-            int populationSize = (int)Math.Round(config.MeanPopulationSize + (config.StDevPopulationSize * RandomGaussian()));
-
-            // Generate people for the location
-            List<Person> people = config.GeneratePeople(populationSize, config);
-
-            // Create the location
-            Location location = new Location(locationId);
-
-            foreach (Person person in people)
-            {
-                location.people.Add(person);
-            }
-
-            return location;
-        }
-
-        //Creates a location that has an infected person
-        public static Location CreateInfectedLocation(string locationId, Configuration config)
-        {
-            //Generate population size for the location based on mean and standard deviation
-            int populationSize = (int)Math.Round(config.MeanPopulationSize + (config.StDevPopulationSize * RandomGaussian()));
-
-            //Generate people for the location
-            List<Person> people = config.GeneratePeople(populationSize, config);
-
-            //Select a person to be patient zero
-            PatientZero(people);
-
-            // Create the location
-            Location location = new Location(locationId);
-
-            foreach (Person person in people)
-            {
-                location.people.Add(person);
-            }
-
-            return location;
-        }
         //Randomly picks a person to have the disease
         public static void PatientZero(List<Person> people)
         {
             Random random = new Random();
             int patientZero = random.Next(0, people.Count);
             people[patientZero].IsInfected = true;
-        }
-
-        //Generates numbers using a normal distribution
-        public static double RandomGaussian()
-        {
-            Random rand = new Random();
-            double u1 = 1.0 - rand.NextDouble(); // Uniform(0,1] random doubles
-            double u2 = 1.0 - rand.NextDouble();
-            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
-            return randStdNormal;
         }
     }
 }
