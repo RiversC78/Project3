@@ -18,11 +18,15 @@ namespace Project3
     /// </summary>
     public class Location
     {
+        //location id 
         public string Id { get; set; }
+        //list of people at location at any given time
         public ICollection<Person> people { get; set; }
+        //list of all neighboring locations of a given location
         public ICollection<Location> neighbors { get; set; }
+        //list of all population sizes of a location from different times
         public List<int> populationSizes { get; set; }
-
+        //list of all total number of sick people at a location from different times
         public List<int> SickCount { get; set; }
 
 
@@ -35,7 +39,11 @@ namespace Project3
             populationSizes = new List<int>();
             SickCount = new List<int>();
         }
-
+        /// <summary>
+        /// Method to spread the disease 
+        /// </summary>
+        /// <param name="spreadChance">chance to spread the disease</param>
+        /// <param name="currentPerson">person who may spread the disease</param>
         public void SpreadDisease(double spreadChance, Person currentPerson)
         {
             Random random = new Random();
@@ -62,7 +70,10 @@ namespace Project3
                 }
             }
         }//end SpreadDisease
-         //Moves a person to a neighboring location
+         /// <summary>
+         /// moves a person to a neighboring location
+         /// </summary>
+         /// <param name="person">person to be moved</param>
         public void MovePeople(Person person)
         {
             Random random = new Random();
@@ -74,21 +85,28 @@ namespace Project3
                 chosenNeighbor.people.Add(person);
                 people.Remove(person);
             }
-        }
+        }//end MovePeople
 
-        //Updates the population size
+        /// <summary>
+        /// Updates the population size
+        /// </summary>
         public void UpdatePopSize()
         {
             populationSizes.Add(people.Count);
-        }
+        }//end UpdatePopSize
 
-        //Averages the population sizes
+        /// <summary>
+        /// Averages the population sizes
+        /// </summary>
+        /// <returns>current population size and adds it to the list</returns>
         public double AveragePopulation()
         {
             return populationSizes.Average();
         }
 
-        //Stores how many infected people at a location at that hour in a list
+        /// <summary>
+        /// Stores how many infected people at a location at that hour in a list
+        /// </summary>
         public void UpdateSickCount()
         {
             int sickCount = 0;
@@ -100,14 +118,23 @@ namespace Project3
                 }
             }
             SickCount.Add(sickCount);
-        }
+        }//end UpdateSickCount
 
-        //Averages the amount of infected people at the location
+        /// <summary>
+        /// Averages the amount of infected people at the location
+        /// </summary>
+        /// <returns></returns>
         public double AverageInfected()
         {
             return SickCount.Average();
-        }
-        //Creates a location that has an infected person
+        }//end AverageInfected
+
+        /// <summary>
+        /// Creates a location that has the first infected person
+        /// </summary>
+        /// <param name="locationId"> location unique identifier</param>
+        /// <param name="config">configuration file attributes</param>
+        /// <returns>Location with patient zero</returns>
         public static Location CreateInfectedLocation(string locationId, Configuration config)
         {
             //Generate population size for the location based on mean and standard deviation
@@ -128,8 +155,14 @@ namespace Project3
             }
 
             return location;
-        }
-        //Creates a location with a mean and standard deviation of people
+        }//end CreateInfectedLocation
+
+        /// <summary>
+        /// Creates a location with a mean and standard deviation of people
+        /// </summary>
+        /// <param name="locationId">unique location identifier</param>
+        /// <param name="config">configuration file attributes</param>
+        /// <returns></returns>
         public static Location CreateLocation(string locationId, Configuration config)
         {
             // Generate population size for the location based on mean and standard deviation
@@ -147,6 +180,6 @@ namespace Project3
             }
 
             return location;
-        }
-    }
-}
+        }//end CreateLocation
+    }//end class
+}//end namespace

@@ -283,15 +283,6 @@
 
 
             File.WriteAllText(csvFilePath, string.Empty);
-        }
-        //End of Main
-
-        //Randomly picks a person to have the disease
-        public static void PatientZero(List<Person> people)
-        {
-            Random random = new Random();
-            int patientZero = random.Next(0, people.Count);
-            people[patientZero].IsInfected = true;
-        }
-    }
-}
+        }//End of Main
+    }//end class
+}//end namespace
