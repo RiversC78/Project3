@@ -40,7 +40,7 @@ namespace Project3
         //Standard Deviation of the percent chance of a person entering quarantine value between 0-100 as a percentage
         public double StDevQuarantineChance { get; set; }
         //How long the simulation lasts
-        public int SimulationMinutes { get; set; }
+        public int SimulationHours { get; set; }
         //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
 
@@ -121,12 +121,12 @@ namespace Project3
                                 string propertySet = temp[1].Trim();
                                 StDevQuarantineChance = double.Parse(propertySet);
                             }
-                            //set Simulation Minutes 
+                            //set Simulation Hours 
                             else if (Regex.IsMatch(line, @"durationOfSimMinutes"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
-                                SimulationMinutes = int.Parse(propertySet);
+                                SimulationHours = int.Parse(propertySet);
                             }
                             //set TravelChance
                             else if (Regex.IsMatch(line, @"chanceOfTravel"))
@@ -193,6 +193,7 @@ namespace Project3
                 //No one is quarantined at generation
                 bool isQuarantined = false;
                 //Quarantine chance is taken from the configuration
+                //TODO GenerateQuarantineChance() will always return a one
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = TravelChance;
 
@@ -207,7 +208,6 @@ namespace Project3
                 //Generated people are added to a list
                 people.Add(person);
             }
-
             return people;
         }
 
@@ -218,12 +218,11 @@ namespace Project3
             //Mean and stardard deviation of quarantine chance are taken from configuration
             double mean = MeanQuarantineChance;
             double stdDev = StDevQuarantineChance;
+            //Chance clamped between 0 and 100, to be used like a percentage
             double chance = rand.NextGaussian(mean, stdDev);
-            //Chance clamped between 0 and 1
-            return Math.Max(0, Math.Min(1, chance));
+            //Chance clamped between 0 and 100, to be used like a percentage
+            return chance; 
         }
-
-
 
         //Generates numbers using a normal distribution
         public static double RandomGaussian()

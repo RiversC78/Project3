@@ -1,7 +1,4 @@
-﻿
-using System.Diagnostics;
-
-namespace Project3
+﻿namespace Project3
 {
     /// <summary>
     /// container for main program
@@ -16,11 +13,12 @@ namespace Project3
         {
 
             // File path for easy changing based off of where file is
-            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
             //filepath for csv
-            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -39,7 +37,7 @@ namespace Project3
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
 
-            //Create two locations
+            //Create two locations and a list of all locations 
             Location location1 = CreateInfectedLocation("location 1", config);
             Location location2 = CreateLocation("location 2", config);
 
@@ -58,12 +56,13 @@ namespace Project3
 
             List<Location> locations = new List<Location> { location1, location2 };
 
-            int totalSimulationMinutes = 0;
+            int totalSimulationHours = 0;
+            int totalCompletedSimDays = 0;
 
             List<Person> peopleToMove = new List<Person>();
 
             //Runs the simulation until the total simulation time reaches the configuration's total time
-            while (totalSimulationMinutes < config.SimulationMinutes)
+            while (totalSimulationHours < config.SimulationHours)
             {
                 //Simulates each hour of the day
                 for (int hour = 0; hour < 24; hour++)
@@ -200,18 +199,24 @@ namespace Project3
                     infectedCount = 0;
                     QuarantinedCount = 0;
 
-                    //Increments the total simulation minutes by an hour
-                    totalSimulationMinutes += 60;
+                    //increment total sim hours as an hour has passed
+                    totalSimulationHours++;
 
-
-                    //When the total simulation minutes reaches the time specified in the configuration, it ends
-                    if (totalSimulationMinutes >= config.SimulationMinutes)
+                    //When the total simulation hours reaches the time specified in the configuration, it ends
+                    if (totalSimulationHours >= config.SimulationHours)
                     {
                         break;
                     }
-                }
-            }
-
+                    //check if everyone is dead and break loop early if so - jump to final report section
+                    if (Person.IsEveryoneDead(locations))
+                    {
+                        goto FinalReport; 
+                    }
+                }//end hour 
+                totalCompletedSimDays++; 
+            }//end main sim while loop
+            //identifier for jump point if everyone is dead 
+            FinalReport:
             //Finds data for end report
             foreach (Location location in locations)
             {
@@ -254,7 +259,7 @@ namespace Project3
 
 
             Console.WriteLine(" ---- Final Report: ");
-            Console.WriteLine($"Total run time: {totalSimulationMinutes} minutes");
+            Console.WriteLine($"Total run time: {totalSimulationHours} hours in simulation time");
             Console.WriteLine($"Total infected: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
             Console.WriteLine($"Percent infected: {infectionPercentage}");
@@ -331,7 +336,6 @@ namespace Project3
             people[patientZero].IsInfected = true;
         }
 
-
         //Generates numbers using a normal distribution
         public static double RandomGaussian()
         {
@@ -341,6 +345,5 @@ namespace Project3
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
             return randStdNormal;
         }
-
     }
 }
