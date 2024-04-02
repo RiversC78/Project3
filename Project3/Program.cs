@@ -1,4 +1,6 @@
-﻿namespace Project3
+﻿using System.Diagnostics;
+
+namespace Project3
 {
     /// <summary>
     /// container for main program
@@ -61,6 +63,9 @@
 
             List<Person> peopleToMove = new List<Person>();
 
+            //stopwatch to time how long the sim runs in real time
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start(); 
             //Runs the simulation until the total simulation time reaches the configuration's total time
             while (totalSimulationHours < config.SimulationHours)
             {
@@ -74,7 +79,7 @@
                             //**TODO: Update still needs to be fixed. 
                             //Updates how long someone has been in quarantine
 
-                            person.Update();
+                            person.Update(person);
 
                             //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
                             if (person.ShouldMove(hour))
@@ -215,6 +220,8 @@
                 }//end hour 
                 totalCompletedSimDays++; 
             }//end main sim while loop
+            //end stopwatch time for total sim 
+            stopwatch.Stop();
             //identifier for jump point if everyone is dead 
             FinalReport:
             //Finds data for end report
@@ -259,7 +266,8 @@
 
 
             Console.WriteLine(" ---- Final Report: ");
-            Console.WriteLine($"Total run time: {totalSimulationHours} hours in simulation time");
+            Console.WriteLine($"Total sim run time: {totalSimulationHours} hours in simulation time");
+            Console.WriteLine($"Total real run time: {stopwatch.ElapsedMilliseconds} milliseconds in real time");
             Console.WriteLine($"Total infected: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
             Console.WriteLine($"Percent infected: {infectionPercentage}");
