@@ -171,5 +171,12 @@ namespace Project3
             //if not all locations are empty return false
             return false;
         }
+        //Randomly picks a person to have the disease
+        public static void PatientZero(List<Person> people)
+        {
+            Random random = new Random();
+            int patientZero = random.Next(0, people.Count);
+            people[patientZero].IsInfected = true;
+        }
     }
 }
