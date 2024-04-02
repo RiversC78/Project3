@@ -140,7 +140,7 @@ namespace Project3
             return !IsQuarantined && !IsDead && IsInfected;
         }
         //method to determine if everyone that is alive no longer has the disease and if it is still spreadable or if everyone infected quarantined or is dead - checks by location
-        public bool IsEveryoneDead(List<Location> locations)
+        public static bool IsEveryoneDead(List<Location> locations)
         {
             //check each location
             foreach (var place in locations)
@@ -148,7 +148,7 @@ namespace Project3
                 //used to test if everyone at a location is dead
                 int deadAtLocation = 0;
                 //if every location only has dead people return true
-                int emptyLocations = 0; 
+                int emptyLocations = 0;
                 //check each person at the location
                 foreach (var person in place.people)
                 {
@@ -169,7 +169,7 @@ namespace Project3
                 }
             }
             //if not all locations are empty return false
-            return false; 
+            return false;
         }
     }
 }

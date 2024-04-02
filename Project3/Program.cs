@@ -207,11 +207,16 @@
                     {
                         break;
                     }
-
+                    //check if everyone is dead and break loop early if so - jump to final report section
+                    if (Person.IsEveryoneDead(locations))
+                    {
+                        goto FinalReport; 
+                    }
                 }//end hour 
                 totalCompletedSimDays++; 
             }//end main sim while loop
-
+            //identifier for jump point if everyone is dead 
+            FinalReport:
             //Finds data for end report
             foreach (Location location in locations)
             {
@@ -254,7 +259,7 @@
 
 
             Console.WriteLine(" ---- Final Report: ");
-            Console.WriteLine($"Total run time: {totalSimulationHours} minutes");
+            Console.WriteLine($"Total run time: {totalSimulationHours} hours in simulation time");
             Console.WriteLine($"Total infected: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
             Console.WriteLine($"Percent infected: {infectionPercentage}");
