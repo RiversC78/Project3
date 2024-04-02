@@ -34,7 +34,6 @@ namespace Project3
             neighbors = new List<Location>();
             populationSizes = new List<int>();
             SickCount = new List<int>();
-
         }
 
         public void SpreadDisease(double spreadChance, Person currentPerson)

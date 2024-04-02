@@ -27,6 +27,7 @@ defined by the configuration file.
 */
 
 using System.Data;
+using System.Text;
 
 namespace Project3
 {
@@ -80,7 +81,7 @@ namespace Project3
             IsQuarantined = isQuarantined;
             QuarantineChance = quarantineChance;
             TravelChance = travelChance;
-            InfectionTime = infectionTime;
+            //InfectionTime = infectionTime;
             QuarantineTime = quarantineTime;
 
             this.config = config;
@@ -123,13 +124,13 @@ namespace Project3
             //Determines if someone still has the disease
             if (IsInfected)
             {
-                InfectionTime++;
-                //If they've been infected for the duration the disease lasts, they no longer are infected
-                if (InfectionTime >= config.DiseaseHours)
-                {
-                    IsInfected = false;
-                    InfectionTime = 0;
-                }
+                //InfectionTime++;
+                ////If they've been infected for the duration the disease lasts, they no longer are infected
+                //if (InfectionTime >= config.DiseaseHours)
+                //{
+                //    IsInfected = false;
+                //    InfectionTime = 0;
+                //}
             }
         }
 
@@ -138,6 +139,37 @@ namespace Project3
         {
             return !IsQuarantined && !IsDead && IsInfected;
         }
-
+        //method to determine if everyone that is alive no longer has the disease and if it is still spreadable or if everyone infected quarantined or is dead - checks by location
+        public static bool IsEveryoneDead(List<Location> locations)
+        {
+            //check each location
+            foreach (var place in locations)
+            {
+                //used to test if everyone at a location is dead
+                int deadAtLocation = 0;
+                //if every location only has dead people return true
+                int emptyLocations = 0;
+                //check each person at the location
+                foreach (var person in place.people)
+                {
+                    if (person.IsDead)
+                    {
+                        deadAtLocation++;
+                    }
+                }
+                //only check for empty locations after confirming if everyone at a location is dead or not 
+                if (deadAtLocation >= place.people.Count)
+                {
+                    emptyLocations++;
+                }
+                //if all locations are empty return true
+                if (emptyLocations >= locations.Count)
+                {
+                    return true;
+                }
+            }
+            //if not all locations are empty return false
+            return false;
+        }
     }
 }
