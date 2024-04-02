@@ -219,10 +219,10 @@ namespace Project3
             //Mean and stardard deviation of quarantine chance are taken from configuration
             double mean = MeanQuarantineChance;
             double stdDev = StDevQuarantineChance;
+            //Chance clamped between 0 and 100, to be used like a percentage
             double chance = rand.NextGaussian(mean, stdDev);
-            //Chance clamped between 0 and 1
-            //TODO fix this, it will always return one as it is the minimum between 1 and chance and the max between 1 and 0
-            return Math.Max(0, Math.Min(1, chance));
+            //Chance clamped between 0 and 100, to be used like a percentage
+            return chance; 
         }
 
         //Generates numbers using a normal distribution
