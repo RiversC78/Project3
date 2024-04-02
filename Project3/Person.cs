@@ -138,6 +138,11 @@ namespace Project3
         {
             return !IsQuarantined && !IsDead && IsInfected;
         }
+        //method to determine if everyone that is alive no longer has the disease and if it is still spreadable or if everyone infected quarantined or is dead
+        //public bool NoMoreDisease()
+        //{
+        //    foreach(var place in )
 
+        //}
     }
 }

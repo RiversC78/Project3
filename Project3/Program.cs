@@ -13,11 +13,12 @@
         {
 
             // File path for easy changing based off of where file is
-            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
             //filepath for csv
-            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -36,7 +37,7 @@
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
 
-            //Create two locations
+            //Create two locations and a list of all locations 
             Location location1 = CreateInfectedLocation("location 1", config);
             Location location2 = CreateLocation("location 2", config);
 
@@ -203,8 +204,8 @@
                     {
                         break;
                     }
-                }
-            }
+                }//end hour 
+            }//end main sim while loop
 
             //Finds data for end report
             foreach (Location location in locations)
@@ -325,7 +326,6 @@
             people[patientZero].IsInfected = true;
         }
 
-
         //Generates numbers using a normal distribution
         public static double RandomGaussian()
         {
@@ -335,6 +335,5 @@
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2); // Box-Muller transform
             return randStdNormal;
         }
-
     }
 }

@@ -193,6 +193,7 @@ namespace Project3
                 //No one is quarantined at generation
                 bool isQuarantined = false;
                 //Quarantine chance is taken from the configuration
+                //TODO GenerateQuarantineChance() will always return a one
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = TravelChance;
 
@@ -220,10 +221,9 @@ namespace Project3
             double stdDev = StDevQuarantineChance;
             double chance = rand.NextGaussian(mean, stdDev);
             //Chance clamped between 0 and 1
+            //TODO fix this, it will always return one as it is the minimum between 1 and chance and the max between 1 and 0
             return Math.Max(0, Math.Min(1, chance));
         }
-
-
 
         //Generates numbers using a normal distribution
         public static double RandomGaussian()
