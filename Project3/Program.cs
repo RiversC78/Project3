@@ -79,7 +79,7 @@ namespace Project3
                             //**TODO: Update still needs to be fixed. 
                             //Updates how long someone has been in quarantine
 
-                            person.Update();
+                            person.Update(person);
 
                             //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
                             if (person.ShouldMove(hour))
