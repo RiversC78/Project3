@@ -208,7 +208,6 @@ namespace Project3
                 //Generated people are added to a list
                 people.Add(person);
             }
-
             return people;
         }
 
