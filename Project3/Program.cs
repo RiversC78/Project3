@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-
+//TODO The # of people infected should decrement when a person dies so a person that is dead cannot also be infected
+//TODO It doesn't look like any infected people make it to any other location than the original infected location
 namespace Project3
 {
     /// <summary>
@@ -49,6 +50,7 @@ namespace Project3
             int infectedCountPercent = 0;
             int infectedThisHour = 0;
             int totalInfected = 0;
+            int totalSimulationHours = 0;
             List<int> infectedPerHour = new List<int>();
             List<int> infectionsPerPerson = new List<int>();
             List<double> percentInfectedPerHour = new List<double>();
@@ -58,8 +60,6 @@ namespace Project3
             location2.neighbors.Add(location1);
 
             List<Location> locations = new List<Location> { location1, location2 };
-
-            int totalSimulationHours = 0;
 
             List<Person> peopleToMove = new List<Person>();
 
@@ -89,7 +89,7 @@ namespace Project3
                         }
                     }
 
-                    //For everyone that is supposed to move, they are moved
+                //For everyone that is supposed to move, they are moved
                     foreach (Person person in peopleToMove)
                     {
                         foreach (Location location in locations)
@@ -107,7 +107,7 @@ namespace Project3
                     {
                         foreach (Person person in location.people)
                         {
-                            //If a person isn't quarantined or dead, they may spread the disease
+                            //If a person isn't quarantined or dead and is infected, they may spread the disease
                             if (person.CanSpread())
                             {
                                 location.SpreadDisease(config.SpreadChance, person);
@@ -129,7 +129,7 @@ namespace Project3
 
                             if (person.IsDead)
                             {
-                                deadCount++;
+                                deadCount++; 
                             }
                             else
                             {
@@ -279,19 +279,22 @@ namespace Project3
             Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("--------------");
+            Console.ForegroundColor = ConsoleColor.White;
 
             foreach (Location location in locations)
             {
                 double avgPop = location.AveragePopulation();
                 double avgInfected = location.AverageInfected() * 100;
                 double avgQuarantined = location.AverageQuarantined() * 100;
-
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($" ---- Location {location.Id}");
+                Console.ForegroundColor = ConsoleColor.White; 
                 Console.WriteLine($"Average population size: {avgPop}");
                 Console.WriteLine($"Average percent of people sick with disease: {avgInfected}");
                 Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined}");
             }
-
 
             File.WriteAllText(csvFilePath, string.Empty);
         }//End of Main
