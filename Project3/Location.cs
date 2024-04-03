@@ -28,7 +28,12 @@ namespace Project3
         public List<int> populationSizes { get; set; }
         //list of all total number of sick people at a location from different times
         public List<int> SickCount { get; set; }
-
+        //list of percentages from each hour of how many people were infected at a location
+        public List<double> infectedAverage { get; set; }
+        //list of total number of people in quarantine at a location from different times
+        public List<int> QuarantineCount { get; set; }
+        //List of percentages from each hour of how many people are in quarantine at a location
+        public List<double> quarantinedAverage { get; set; }
 
         //Location constructor
         public Location(string id)
@@ -38,6 +43,9 @@ namespace Project3
             neighbors = new List<Location>();
             populationSizes = new List<int>();
             SickCount = new List<int>();
+            infectedAverage = new List<double>();
+            QuarantineCount= new List<int>();
+            quarantinedAverage= new List<double>();
         }
         /// <summary>
         /// Method to spread the disease 
@@ -121,13 +129,51 @@ namespace Project3
         }//end UpdateSickCount
 
         /// <summary>
+        /// Stores how many quarantined people at a location at that hour in a list
+        /// </summary>
+        public void UpdateQuarantineCount()
+        {
+            int quarantineCount = 0;
+            foreach (Person person in people)
+            {
+                if (person.IsQuarantined)
+                {
+                    quarantineCount++;
+                }
+            }
+            QuarantineCount.Add(quarantineCount);
+        }//end UpdateQuarantineCount
+
+        /// <summary>
         /// Averages the amount of infected people at the location
         /// </summary>
         /// <returns></returns>
         public double AverageInfected()
         {
-            return SickCount.Average();
+            for (int i = 0; i < SickCount.Count; i++)
+            {
+                double percentInfected = (double)SickCount.ElementAt(i) / populationSizes.ElementAt(i);
+                infectedAverage.Add(percentInfected);
+            }
+            return infectedAverage.Average();
+
         }//end AverageInfected
+
+        /// <summary>
+        /// Averages the amoount of quarantined people at the location
+        /// </summary>
+        /// <returns></returns>
+        public double AverageQuarantined()
+        {
+            for (int i = 0; i < QuarantineCount.Count; i++)
+            {
+                //var = quatantinecount / popsize
+                double percentQuarantined = (double)QuarantineCount.ElementAt(i) / populationSizes.ElementAt(i);
+                quarantinedAverage.Add(percentQuarantined);
+
+            }
+            return quarantinedAverage.Average();
+        }
 
         /// <summary>
         /// Creates a location that has the first infected person
