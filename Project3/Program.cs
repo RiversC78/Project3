@@ -49,6 +49,7 @@ namespace Project3
             int infectedCountPercent = 0;
             int infectedThisHour = 0;
             int totalInfected = 0;
+            int totalSimulationHours = 0;
             List<int> infectedPerHour = new List<int>();
             List<int> infectionsPerPerson = new List<int>();
 
@@ -57,8 +58,6 @@ namespace Project3
             location2.neighbors.Add(location1);
 
             List<Location> locations = new List<Location> { location1, location2 };
-
-            int totalSimulationHours = 0;
 
             List<Person> peopleToMove = new List<Person>();
 
@@ -274,20 +273,21 @@ namespace Project3
             Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
+            Console.WriteLine();
 
             foreach (Location location in locations)
             {
                 double avgPop = location.AveragePopulation();
                 double avgInfected = location.AverageInfected();
                 double avgQuarantined;
-
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($" ---- Location {location.Id}");
+                Console.ForegroundColor = ConsoleColor.White; 
                 Console.WriteLine($"Average population size: {avgPop}");
                 //TODO: Fix issue with no one infected at location 2
                 Console.WriteLine($"Average percent of people sick with disease: {avgInfected}");
                 Console.WriteLine($"Average percent of people in quarantine: ");
             }
-
 
             File.WriteAllText(csvFilePath, string.Empty);
         }//End of Main
