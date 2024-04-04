@@ -217,10 +217,11 @@ namespace Project3
                         break;
                     }
                     //check if everyone is dead and break loop early if so - jump to final report section
-                    if (Person.IsEveryoneDead(locations))
+                    if (Person.IsDiseaseDead(locations))
                     {
                         goto FinalReport; 
                     }
+                    
                 }//end hour 
                 day++; 
             }//end main sim while loop
@@ -255,7 +256,7 @@ namespace Project3
             //Calculates the average number of people an infected person spread the disease to
             double averageInfectionsPerPerson;
             //checks if the disease was spread at all or if the first person who got the disease died before spreading it
-            if (infectionsPerPerson == null)
+            if (infectionsPerPerson.Count == 0)
             {
                 averageInfectionsPerPerson = 0; 
             }
@@ -264,7 +265,16 @@ namespace Project3
                 averageInfectionsPerPerson = infectionsPerPerson.Average();
             }
             //Finds the maximum number of infections caused by a person
-            int maxInfectionPerPerson = infectionsPerPerson.Max();
+            int maxInfectionPerPerson;
+            //checks if the disease was spread at all or if the first person who got the disease died before spreading it
+            if (infectionsPerPerson.Count == 0)
+            {
+                maxInfectionPerPerson = 0;
+            }
+            else
+            {
+                maxInfectionPerPerson = infectionsPerPerson.Max();
+            }
 
             //Once the simulation is complete, it should generate a report with the following information:
             // How long did the simulation run

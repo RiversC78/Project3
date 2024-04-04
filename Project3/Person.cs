@@ -190,5 +190,41 @@ namespace Project3
             int patientZero = random.Next(0, people.Count);
             people[patientZero].IsInfected = true;
         }//end PatientZero
+        /// <summary>
+        /// checks to see if everyone with the disease is dead and it is no longer spreadable - used to end sim early if so
+        /// </summary>
+        /// <param name="locations">list of locations active in the sim</param>
+        /// <returns>true or false if everyone with the disease is dead</returns>
+        public static bool IsDiseaseDead(List<Location> locations) 
+        {
+            //make sure if everyone in the sim is dead or not
+            if (IsEveryoneDead(locations))
+            {
+                return true; 
+            }
+            //create counter variable for # of people infected 
+            int infectedCount = 0;
+            //check by each place 
+            foreach (var place in locations)
+            {
+                foreach(var person in place.people)
+                {
+                    if (person.IsInfected)
+                    {
+                        infectedCount++;
+                    }
+                }
+            }
+            //if there is no one currently infected, return true (people who are dead will not show infected)
+            if (infectedCount == 0)
+            {
+                return true;
+            }
+            //if there is at least one person infected continue sim - including if everyone infected is quarantined or not
+            else
+            {
+                return false;
+            }
+        }//end IsDiseaseDead
     }//end class
 }//end namespace
