@@ -174,6 +174,7 @@ namespace Project3
         /// <param name="peopleCount">number of people to generate</param>
         /// <param name="config">configuration file attributes</param>
         /// <returns>list of people created</returns>
+        //TODO - this method creates people with the same ID's for each location (location one will have person 0 and so will location two) - make it so no two people have the same ID
         public List<Person> GeneratePeople(int peopleCount, Configuration config)
         {
             //Create a list of people
