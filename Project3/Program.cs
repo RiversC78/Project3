@@ -16,12 +16,12 @@ namespace Project3
         {
 
             // File path for easy changing based off of where file is
-            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
             //filepath for csv
-            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
-            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
+            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            //string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -58,6 +58,7 @@ namespace Project3
             int totalSimulationHours = 0;
             List<int> infectedPerHour = new List<int>();
             List<int> infectionsPerPerson = new List<int>();
+            List<double> percentInfectedPerHour = new List<double>();
 
             //The locations are neighbors
             location1.neighbors.Add(location2);
@@ -156,6 +157,8 @@ namespace Project3
                         location.UpdatePopSize();
                         //Updates the amount of sick people at each location
                         location.UpdateSickCount();
+                        //Adds to list to calculate the average of people quarantining
+                        location.UpdateQuarantineCount();
                     }
                     //Adds to list to calculate the average infected per hour
                     infectedPerHour.Add(infectedThisHour);
@@ -165,7 +168,6 @@ namespace Project3
 
                     //Reset variable
                     infectedThisHour = 0;
-
 
                     //Data to log to CSV:
                     // The person’s information that has been infected the most
@@ -229,6 +231,9 @@ namespace Project3
             //Finds data for end report
             foreach (Location location in locations)
             {
+                //double var = infected/total people 
+                
+                
                 foreach (Person person in location.people)
                 {
                     if (person.IsDead)
@@ -284,15 +289,14 @@ namespace Project3
             foreach (Location location in locations)
             {
                 double avgPop = location.AveragePopulation();
-                double avgInfected = location.AverageInfected();
-                double avgQuarantined;
+                double avgInfected = location.AverageInfected() * 100;
+                double avgQuarantined = location.AverageQuarantined() * 100;
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($" ---- Location {location.Id}");
                 Console.ForegroundColor = ConsoleColor.White; 
                 Console.WriteLine($"Average population size: {avgPop}");
-                //TODO: Fix issue with no one infected at location 2
                 Console.WriteLine($"Average percent of people sick with disease: {avgInfected}");
-                Console.WriteLine($"Average percent of people in quarantine: ");
+                Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined}");
             }
 
             File.WriteAllText(csvFilePath, string.Empty);
