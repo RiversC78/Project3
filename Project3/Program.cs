@@ -16,12 +16,12 @@ namespace Project3
         {
 
             // File path for easy changing based off of where file is
-            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
             //filepath for csv
-            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
-            //string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
+            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -55,7 +55,7 @@ namespace Project3
             int infectedCountPercent = 0;
             int infectedThisHour = 0;
             int totalInfected = 0;
-            int totalSimulationHours = 0;
+            int totalSimulationHours = 1;
             List<int> infectedPerHour = new List<int>();
             List<int> infectionsPerPerson = new List<int>();
             List<double> percentInfectedPerHour = new List<double>();
@@ -217,10 +217,11 @@ namespace Project3
                         break;
                     }
                     //check if everyone is dead and break loop early if so - jump to final report section
-                    if (Person.IsEveryoneDead(locations))
+                    if (Person.IsDiseaseDead(locations))
                     {
                         goto FinalReport; 
                     }
+                    
                 }//end hour 
                 day++; 
             }//end main sim while loop
@@ -253,9 +254,27 @@ namespace Project3
             //Calculates the average percent of people infected each hour
             double averageInfectedPerHour = infectedPerHour.Average();
             //Calculates the average number of people an infected person spread the disease to
-            double averageInfectionsPerPerson = infectionsPerPerson.Average();
+            double averageInfectionsPerPerson;
+            //checks if the disease was spread at all or if the first person who got the disease died before spreading it
+            if (infectionsPerPerson.Count == 0)
+            {
+                averageInfectionsPerPerson = 0; 
+            }
+            else
+            {
+                averageInfectionsPerPerson = infectionsPerPerson.Average();
+            }
             //Finds the maximum number of infections caused by a person
-            int maxInfectionPerPerson = infectionsPerPerson.Max();
+            int maxInfectionPerPerson;
+            //checks if the disease was spread at all or if the first person who got the disease died before spreading it
+            if (infectionsPerPerson.Count == 0)
+            {
+                maxInfectionPerPerson = 0;
+            }
+            else
+            {
+                maxInfectionPerPerson = infectionsPerPerson.Max();
+            }
 
             //Once the simulation is complete, it should generate a report with the following information:
             // How long did the simulation run
@@ -277,8 +296,8 @@ namespace Project3
             Console.WriteLine($"Total real run time: {stopwatch.ElapsedMilliseconds} milliseconds in real time");
             Console.WriteLine($"Total infected: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
-            Console.WriteLine($"Percent infected: {infectionPercentage}");
-            Console.WriteLine($"Percent dead: {deathPercent}");
+            Console.WriteLine($"Percent infected: {infectionPercentage} %");
+            Console.WriteLine($"Percent dead: {deathPercent} %");
             Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
@@ -295,8 +314,8 @@ namespace Project3
                 Console.WriteLine($" ---- Location {location.Id}");
                 Console.ForegroundColor = ConsoleColor.White; 
                 Console.WriteLine($"Average population size: {avgPop}");
-                Console.WriteLine($"Average percent of people sick with disease: {avgInfected}");
-                Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined}");
+                Console.WriteLine($"Average percent of people sick with disease: {avgInfected} %");
+                Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined} %");
             }
 
             File.WriteAllText(csvFilePath, string.Empty);
