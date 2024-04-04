@@ -253,7 +253,16 @@ namespace Project3
             //Calculates the average percent of people infected each hour
             double averageInfectedPerHour = infectedPerHour.Average();
             //Calculates the average number of people an infected person spread the disease to
-            double averageInfectionsPerPerson = infectionsPerPerson.Average();
+            double averageInfectionsPerPerson;
+            //checks if the disease was spread at all or if the first person who got the disease died before spreading it
+            if (infectionsPerPerson == null)
+            {
+                averageInfectionsPerPerson = 0; 
+            }
+            else
+            {
+                averageInfectionsPerPerson = infectionsPerPerson.Average();
+            }
             //Finds the maximum number of infections caused by a person
             int maxInfectionPerPerson = infectionsPerPerson.Max();
 
@@ -278,7 +287,7 @@ namespace Project3
             Console.WriteLine($"Total infected: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
             Console.WriteLine($"Percent infected: {infectionPercentage}");
-            Console.WriteLine($"Percent dead: {deathPercent}");
+            Console.WriteLine($"Percent dead: {deathPercent}%");
             Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
