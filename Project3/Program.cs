@@ -208,7 +208,7 @@ namespace Project3
                     }//end using
 
                     //Write where people are at to a csv for easy debugging
-                    using (StreamWriter writer = new StreamWriter(new FileStream(csvFilePath, FileMode.Append, FileAccess.Write)))
+                    using (StreamWriter writer = new StreamWriter(new FileStream(wherePeopleAreList, FileMode.Append, FileAccess.Write)))
                     {
                         writer.WriteLine($"--- Day {day}  - Hour {hour} ---");
                         foreach(var location in locations)
