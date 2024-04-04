@@ -40,9 +40,14 @@ namespace Project3
             Configuration config = new Configuration();
             config.LoadConfiguration(filePath);
 
+            //make empty list of locations to add to for passable parameter to Create the locations (specifically for GeneratePeople())
+            List<Location> locations = new List<Location> { };
+            //With current method for location creation, Infected location must always be *created first*
             //Create two locations and a list of all locations 
             Location location1 = Location.CreateInfectedLocation("location 1", config);
-            Location location2 = Location.CreateLocation("location 2", config);
+            locations.Add(location1);
+            Location location2 = Location.CreateLocation("location 2", config, locations);
+            locations.Add(location2);
 
             //variables used for final report at the end of the simulation
             int totalPeople = location1.people.Count + location2.people.Count;
@@ -58,8 +63,6 @@ namespace Project3
             //The locations are neighbors
             location1.neighbors.Add(location2);
             location2.neighbors.Add(location1);
-
-            List<Location> locations = new List<Location> { location1, location2 };
 
             List<Person> peopleToMove = new List<Person>();
 
