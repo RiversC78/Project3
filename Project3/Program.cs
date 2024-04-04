@@ -16,12 +16,12 @@ namespace Project3
         {
 
             // File path for easy changing based off of where file is
-            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
             //filepath for csv
-            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
-            //string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
+            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
 
             //Variables used for CSV file metrics
             int day = 0;

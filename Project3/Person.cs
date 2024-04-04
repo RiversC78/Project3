@@ -107,6 +107,8 @@ namespace Project3
                 if (deathChance > config.DeathChance)
                 {
                     person.IsDead = true;
+                    person.IsInfected = false;
+                    person.IsQuarantined = false; 
                 }
             }
 
