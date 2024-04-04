@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-//TODO The # of people infected should decrement when a person dies so a person that is dead cannot also be infected
-//TODO It doesn't look like any infected people make it to any other location than the original infected location
 namespace Project3
 {
     /// <summary>
@@ -21,7 +19,12 @@ namespace Project3
 
             //filepath for csv
             //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
-            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv"; ;
+            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv";
+
+            //filepath for csv of where different people are during each hour
+            //mainly for debugging and seeing how people move 
+            //string wherePeopleAreList = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\PeopleList.csv";
+            string wherePeopleAreList = @"C:\Users\xarsk\downloads\PeopleList.csv";
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -202,7 +205,22 @@ namespace Project3
                         writer.WriteLine($"  -  People infected: {infectedCount}");
                         writer.WriteLine($"  -  People Quarantined: {QuarantinedCount} \n");
                         writer.Close();
-                    }
+                    }//end using
+
+                    //Write where people are at to a csv for easy debugging
+                    using (StreamWriter writer = new StreamWriter(new FileStream(csvFilePath, FileMode.Append, FileAccess.Write)))
+                    {
+                        writer.WriteLine($"--- Day {day}  - Hour {hour} ---");
+                        foreach(var location in locations)
+                        {
+                            writer.WriteLine($"{location.Id} \n" );
+                            foreach(var person in location.people)
+                            {
+                                writer.WriteLine($"{person.Id} - Infected?: {person.IsInfected} - Quarantined?: {person.IsQuarantined}");
+                            }
+                            writer.WriteLine("-----------");
+                        }
+                    }//end using
                     deadCount = 0;
                     aliveCount = 0;
                     infectedCount = 0;
@@ -319,6 +337,7 @@ namespace Project3
             }
 
             File.WriteAllText(csvFilePath, string.Empty);
+            File.WriteAllText(wherePeopleAreList, string.Empty);
         }//End of Main
     }//end class
 }//end namespace

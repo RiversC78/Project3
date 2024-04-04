@@ -191,9 +191,7 @@ namespace Project3
 
             //Select a person to be patient zero
             Person.PatientZero(people);
-            //TODO need to add this person to the sick count of the location (if relevant)
             
-
             // Create the location
             Location location = new Location(locationId);
 

@@ -197,7 +197,6 @@ namespace Project3
                 //No one is quarantined at generation
                 bool isQuarantined = false;
                 //Quarantine chance is taken from the configuration
-                //TODO GenerateQuarantineChance() will always return a one
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = TravelChance;
 
@@ -229,6 +228,7 @@ namespace Project3
             //Chance clamped between 0 and 100, to be used like a percentage
             double chance = rand.NextGaussian(mean, stdDev);
             //Chance clamped between 0 and 100, to be used like a percentage
+            //TODO instructions say to clamp between 0 and 1, checking with teacher if this method is fine or if I need to change it
             return chance; 
         }//end GenerateQuarantineChance
     }
