@@ -55,7 +55,7 @@ namespace Project3
             int infectedCountPercent = 0;
             int infectedThisHour = 0;
             int totalInfected = 0;
-            int totalSimulationHours = 0;
+            int totalSimulationHours = 1;
             List<int> infectedPerHour = new List<int>();
             List<int> infectionsPerPerson = new List<int>();
             List<double> percentInfectedPerHour = new List<double>();
@@ -296,8 +296,8 @@ namespace Project3
             Console.WriteLine($"Total real run time: {stopwatch.ElapsedMilliseconds} milliseconds in real time");
             Console.WriteLine($"Total infected: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
-            Console.WriteLine($"Percent infected: {infectionPercentage}");
-            Console.WriteLine($"Percent dead: {deathPercent}%");
+            Console.WriteLine($"Percent infected: {infectionPercentage} %");
+            Console.WriteLine($"Percent dead: {deathPercent} %");
             Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
@@ -314,8 +314,8 @@ namespace Project3
                 Console.WriteLine($" ---- Location {location.Id}");
                 Console.ForegroundColor = ConsoleColor.White; 
                 Console.WriteLine($"Average population size: {avgPop}");
-                Console.WriteLine($"Average percent of people sick with disease: {avgInfected}");
-                Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined}");
+                Console.WriteLine($"Average percent of people sick with disease: {avgInfected} %");
+                Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined} %");
             }
 
             File.WriteAllText(csvFilePath, string.Empty);
