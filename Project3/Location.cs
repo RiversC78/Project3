@@ -165,13 +165,20 @@ namespace Project3
         /// <param name="locationId">unique location identifier</param>
         /// <param name="config">configuration file attributes</param>
         /// <returns></returns>
-        public static Location CreateLocation(string locationId, Configuration config)
+        public static Location CreateLocation(string locationId, Configuration config, List<Location> locationList)
         {
+            //Get the number of people at all previously created locations 
+            //starts at negative one to take into account person 0 with Count() method
+            int numberOfCurrentPeople = -1; 
+            foreach(Location place in locationList)
+            {
+                numberOfCurrentPeople = place.people.Count();
+            }
             // Generate population size for the location based on mean and standard deviation
             int populationSize = (int)Math.Round(config.MeanPopulationSize + (config.StDevPopulationSize * MathOperations.RandomGaussian()));
 
             // Generate people for the location
-            List<Person> people = config.GeneratePeople(populationSize, config);
+            List<Person> people = config.GeneratePeople(populationSize, config, numberOfCurrentPeople);
 
             // Create the location
             Location location = new Location(locationId);

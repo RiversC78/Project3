@@ -174,8 +174,7 @@ namespace Project3
         /// <param name="peopleCount">number of people to generate</param>
         /// <param name="config">configuration file attributes</param>
         /// <returns>list of people created</returns>
-        //TODO - this method creates people with the same ID's for each location (location one will have person 0 and so will location two) - make it so no two people have the same ID
-        public List<Person> GeneratePeople(int peopleCount, Configuration config)
+        public List<Person> GeneratePeople(int peopleCount, Configuration config, int peopleAlreadyExisting = 0)
         {
             //Create a list of people
             List<Person> people = new List<Person>();
@@ -184,7 +183,7 @@ namespace Project3
 
             for (int i = 0; i < peopleCount; i++)
             {
-                string id = $"Person_{i}";
+                string id = $"Person_{i + peopleAlreadyExisting}";
                 //People may begin travelling between hours 0-23
                 int travelStartTime = rand.Next(0, 24);
                 //travelEndTime can only be after travelStartTime
