@@ -271,6 +271,6 @@ namespace Project3
             {
                 return false; 
             }
-        }
+        }//end IsPersonImmune
     }
 }//end namespace
