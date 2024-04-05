@@ -189,7 +189,7 @@ namespace Project3
         public static void PatientZero(List<Person> people)
         {
             Random random = new Random();
-            int patientZero = random.Next(0, people.Count);
+            int patientZero = random.Next(0, people.Count-1);
             people[patientZero].IsInfected = true;
         }//end PatientZero
 
