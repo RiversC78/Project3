@@ -14,17 +14,17 @@ namespace Project3
         {
 
             // File path for easy changing based off of where file is
-            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
 
             //filepath for csv
-            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
-            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv";
+            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            //string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv";
 
             //filepath for csv of where different people are during each hour
             //mainly for debugging and seeing how people move 
-            //string wherePeopleAreList = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\PeopleList.csv";
-            string wherePeopleAreList = @"C:\Users\xarsk\downloads\PeopleList.csv";
+            string wherePeopleAreList = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\PeopleList.csv";
+            //string wherePeopleAreList = @"C:\Users\xarsk\downloads\PeopleList.csv";
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -71,7 +71,7 @@ namespace Project3
 
             //stopwatch to time how long the sim runs in real time
             Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start(); 
+            stopwatch.Start();
             //Runs the simulation until the total simulation time reaches the configuration's total time
             while (totalSimulationHours < config.SimulationHours)
             {
@@ -82,9 +82,7 @@ namespace Project3
                     {
                         foreach (Person person in location.people)
                         {
-                            //**TODO: Update still needs to be fixed. 
                             //Updates how long someone has been in quarantine
-
                             person.Update(person);
 
                             //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
@@ -95,7 +93,7 @@ namespace Project3
                         }
                     }
 
-                //For everyone that is supposed to move, they are moved
+                    //For everyone that is supposed to move, they are moved
                     foreach (Person person in peopleToMove)
                     {
                         foreach (Location location in locations)
@@ -135,7 +133,7 @@ namespace Project3
 
                             if (person.IsDead)
                             {
-                                deadCount++; 
+                                deadCount++;
                             }
                             else
                             {
@@ -173,12 +171,12 @@ namespace Project3
                     infectedThisHour = 0;
 
                     //Data to log to CSV:
-                    // The person’s information that has been infected the most
-                    // The person’s information that has spread the disease the most
-                    // The number of people currently not dead
-                    // The number of people currently dead
-                    // The number of people currently infected with the disease
-                    // The number of people currently quarantined
+                    // The person’s information that has been infected the most
+                    // The person’s information that has spread the disease the most
+                    // The number of people currently not dead
+                    // The number of people currently dead
+                    // The number of people currently infected with the disease
+                    // The number of people currently quarantined
 
                     //Write metrics to CSV 
                     using (StreamWriter writer = new StreamWriter(new FileStream(csvFilePath, FileMode.Append, FileAccess.Write)))
@@ -211,10 +209,10 @@ namespace Project3
                     using (StreamWriter writer = new StreamWriter(new FileStream(wherePeopleAreList, FileMode.Append, FileAccess.Write)))
                     {
                         writer.WriteLine($"--- Day {day}  - Hour {hour} ---");
-                        foreach(var location in locations)
+                        foreach (var location in locations)
                         {
-                            writer.WriteLine($"{location.Id} \n" );
-                            foreach(var person in location.people)
+                            writer.WriteLine($"{location.Id} \n");
+                            foreach (var person in location.people)
                             {
                                 writer.WriteLine($"{person.Id} - Infected?: {person.IsInfected} - Quarantined?: {person.IsQuarantined}");
                             }
@@ -237,22 +235,20 @@ namespace Project3
                     //check if everyone is dead and break loop early if so - jump to final report section
                     if (Person.IsDiseaseDead(locations))
                     {
-                        goto FinalReport; 
+                        goto FinalReport;
                     }
-                    
+
                 }//end hour 
-                day++; 
+                day++;
             }//end main sim while loop
             //end stopwatch time for total sim 
             stopwatch.Stop();
-            //identifier for jump point if everyone is dead 
-            FinalReport:
+        //identifier for jump point if everyone is dead 
+        FinalReport:
             //Finds data for end report
             foreach (Location location in locations)
             {
-                //double var = infected/total people 
-                
-                
+
                 foreach (Person person in location.people)
                 {
                     if (person.IsDead)
@@ -276,7 +272,7 @@ namespace Project3
             //checks if the disease was spread at all or if the first person who got the disease died before spreading it
             if (infectionsPerPerson.Count == 0)
             {
-                averageInfectionsPerPerson = 0; 
+                averageInfectionsPerPerson = 0;
             }
             else
             {
@@ -295,15 +291,15 @@ namespace Project3
             }
 
             //Once the simulation is complete, it should generate a report with the following information:
-            // How long did the simulation run
-            // How many people were infected over the course of the simulation
-            // How many people were died over the course of the simulation
-            // What percentage of people were infected at the end of the simulation
-            // What percentage of people were dead at the end of the simulation
-            // What percentage of people were infected on average
-            // What was the average number of people an infected person spread the disease to
-            // What was the maximum number of people an infected person spread the disease to
-            // The following may need to be placed into a separate heading or report:
+            // How long did the simulation run
+            // How many people were infected over the course of the simulation
+            // How many people were died over the course of the simulation
+            // What percentage of people were infected at the end of the simulation
+            // What percentage of people were dead at the end of the simulation
+            // What percentage of people were infected on average
+            // What was the average number of people an infected person spread the disease to
+            // What was the maximum number of people an infected person spread the disease to
+            // The following may need to be placed into a separate heading or report:
             //      o What was the average population size at each location
             //      o What was the average percent of people sick with the disease at each location
             //      o What was the average percent of people in quarantine at each location
@@ -330,7 +326,7 @@ namespace Project3
                 double avgQuarantined = location.AverageQuarantined() * 100;
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($" ---- Location {location.Id}");
-                Console.ForegroundColor = ConsoleColor.White; 
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Average population size: {avgPop}");
                 Console.WriteLine($"Average percent of people sick with disease: {avgInfected} %");
                 Console.WriteLine($"Average percent of people in quarantine: {avgQuarantined} %");
@@ -341,3 +337,4 @@ namespace Project3
         }//End of Main
     }//end class
 }//end namespace
+

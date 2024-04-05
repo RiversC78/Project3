@@ -1,8 +1,7 @@
-﻿
-/*The Location class represents a population or community center. It has the following properties:
- string id – A location’s unique identifier to assist with debugging and analysis.
- ICollection<Person> people – A collection of people currently at the location.
- ICollection<Location> neighbors – A collection of nodes connected to the current
+﻿/*The Location class represents a population or community center. It has the following properties:
+string id – A location’s unique identifier to assist with debugging and analysis.
+ICollection<Person> people – A collection of people currently at the location.
+ICollection<Location> neighbors – A collection of nodes connected to the current
 node.
 Each hour of the simulation, people at the same location should have an opportunity to spread the
 disease to other people at the same location. After the spreading of the disease occurs, then
@@ -44,8 +43,8 @@ namespace Project3
             populationSizes = new List<int>();
             SickCount = new List<int>();
             infectedAverage = new List<double>();
-            QuarantineCount= new List<int>();
-            quarantinedAverage= new List<double>();
+            QuarantineCount = new List<int>();
+            quarantinedAverage = new List<double>();
         }
         /// <summary>
         /// Method to spread the disease 
@@ -78,14 +77,15 @@ namespace Project3
                 }
             }
         }//end SpreadDisease
-         /// <summary>
-         /// moves a person to a neighboring location
-         /// </summary>
-         /// <param name="person">person to be moved</param>
+        /// <summary>
+        /// moves a person to a neighboring location
+        /// </summary>
+        /// <param name="person">person to be moved</param>
         public void MovePeople(Person person)
         {
             Random random = new Random();
-            if (random.Next(0, 100) > person.TravelChance)
+            int randomNumber = random.Next(101);
+            if (randomNumber > person.TravelChance)
             {
                 int pickNeighbor = new Random().Next(neighbors.Count());
                 Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
@@ -167,7 +167,6 @@ namespace Project3
         {
             for (int i = 0; i < QuarantineCount.Count; i++)
             {
-                //var = quatantinecount / popsize
                 double percentQuarantined = (double)QuarantineCount.ElementAt(i) / populationSizes.ElementAt(i);
                 quarantinedAverage.Add(percentQuarantined);
 
@@ -191,7 +190,7 @@ namespace Project3
 
             //Select a person to be patient zero
             Person.PatientZero(people);
-            
+
             // Create the location
             Location location = new Location(locationId);
 
@@ -213,8 +212,8 @@ namespace Project3
         {
             //Get the number of people at all previously created locations 
             //starts at negative one to take into account person 0 with Count() method
-            int numberOfCurrentPeople = -1; 
-            foreach(Location place in locationList)
+            int numberOfCurrentPeople = -1;
+            foreach (Location place in locationList)
             {
                 numberOfCurrentPeople = place.people.Count();
             }
