@@ -56,8 +56,8 @@ namespace Project3
 
         //Track how long someone has been infected
         public int InfectionTime { get; set; }
-
-
+        //If someone is immune or not
+        public bool Immunity { get; set; }
         //Track how long someone has been in quarantine
         public int QuarantineTime { get; set; }
 
@@ -65,7 +65,7 @@ namespace Project3
 
 
         //Constructor
-        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance, int infectionTime, int quarantineTime, Configuration config)
+        public Person(string id, int travelStartTime, int travelEndTime, bool isInfected, int infectionCount, int infectionSpreadCount, bool isDead, bool isQuarantined, double quarantineChance, double travelChance, int infectionTime, int quarantineTime, bool immunity, Configuration config)
         {
             Id = id;
             TravelStartTime = travelStartTime;
@@ -79,11 +79,11 @@ namespace Project3
             TravelChance = travelChance;
             InfectionTime = infectionTime;
             QuarantineTime = quarantineTime;
+            Immunity = immunity; 
 
             this.config = config;
         }//end Person constructor
 
-        //Determines if a person will move
         /// <summary>
         /// Determines if a person will move
         /// </summary>
@@ -189,7 +189,7 @@ namespace Project3
         public static void PatientZero(List<Person> people)
         {
             Random random = new Random();
-            int patientZero = random.Next(0, people.Count);
+            int patientZero = random.Next(0, people.Count-1);
             people[patientZero].IsInfected = true;
         }//end PatientZero
 

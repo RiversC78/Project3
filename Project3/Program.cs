@@ -14,17 +14,17 @@ namespace Project3
         {
 
             // File path for easy changing based off of where file is
-            string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            //string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile4.ini";
 
             //filepath for csv
-            string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
-            //string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv";
+            //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
+            string csvFilePath = @"C:\Users\xarsk\downloads\simulation.csv";
 
             //filepath for csv of where different people are during each hour
             //mainly for debugging and seeing how people move 
-            string wherePeopleAreList = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\PeopleList.csv";
-            //string wherePeopleAreList = @"C:\Users\xarsk\downloads\PeopleList.csv";
+            //string wherePeopleAreList = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\PeopleList.csv";
+            string wherePeopleAreList = @"C:\Users\xarsk\downloads\PeopleList.csv";
 
             //Variables used for CSV file metrics
             int day = 0;
@@ -57,7 +57,8 @@ namespace Project3
             int totalDeaths = 0;
             int infectedCountPercent = 0;
             int infectedThisHour = 0;
-            int totalInfected = 0;
+            //starts at one because there will always be one person infected to start with
+            int totalInfected = 1;
             int totalSimulationHours = 1;
             List<int> infectedPerHour = new List<int>();
             List<int> infectionsPerPerson = new List<int>();
@@ -78,35 +79,7 @@ namespace Project3
                 //Simulates each hour of the day
                 for (int hour = 0; hour < 24; hour++)
                 {
-                    foreach (Location location in locations)
-                    {
-                        foreach (Person person in location.people)
-                        {
-                            //Updates how long someone has been in quarantine
-                            person.Update(person);
-
-                            //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
-                            if (person.ShouldMove(hour))
-                            {
-                                peopleToMove.Add(person);
-                            }
-                        }
-                    }
-
-                    //For everyone that is supposed to move, they are moved
-                    foreach (Person person in peopleToMove)
-                    {
-                        foreach (Location location in locations)
-                        {
-                            if (location.people.Contains(person))
-                            {
-                                location.MovePeople(person);
-                                break;
-                            }
-                        }
-                    }
-
-                    //After everyone has moved, spread disease
+                    //Before everyone has moved, spread disease
                     foreach (Location location in locations)
                     {
                         foreach (Person person in location.people)
@@ -214,11 +187,40 @@ namespace Project3
                             writer.WriteLine($"{location.Id} \n");
                             foreach (var person in location.people)
                             {
-                                writer.WriteLine($"{person.Id} - Infected?: {person.IsInfected} - Quarantined?: {person.IsQuarantined}");
+                                writer.WriteLine($"{person.Id} - Infected?: {person.IsInfected} - Quarantined?: {person.IsQuarantined} - Dead?: {person.IsDead}");
                             }
                             writer.WriteLine("-----------");
                         }
                     }//end using
+
+                    //check where people are, update their characteristics after the disease spreads
+                    foreach (Location location in locations)
+                    {
+                        foreach (Person person in location.people)
+                        {
+                            //Updates how long someone has been in quarantine
+                            person.Update(person);
+
+                            //If a person isn't quarantined or dead and the hour is in their travel time, they may move.
+                            if (person.ShouldMove(hour))
+                            {
+                                peopleToMove.Add(person);
+                            }
+                        }
+                    }
+
+                    //For everyone that is supposed to move, they are moved
+                    foreach (Person person in peopleToMove)
+                    {
+                        foreach (Location location in locations)
+                        {
+                            if (location.people.Contains(person))
+                            {
+                                location.MovePeople(person);
+                                break;
+                            }
+                        }
+                    }
                     deadCount = 0;
                     aliveCount = 0;
                     infectedCount = 0;
@@ -307,12 +309,13 @@ namespace Project3
 
             Console.WriteLine(" ---- Final Report: ");
             Console.WriteLine($"Total sim run time: {totalSimulationHours} hours in simulation time");
+            Console.WriteLine($"Maximum sim run time: {config.SimulationHours} hours in simulation time");
             Console.WriteLine($"Total real run time: {stopwatch.ElapsedMilliseconds} milliseconds in real time");
-            Console.WriteLine($"Total infected: {totalInfected}");
+            Console.WriteLine($"Total infections: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
-            Console.WriteLine($"Percent infected: {infectionPercentage} %");
+            Console.WriteLine($"Percent currently infected: {infectionPercentage} %");
             Console.WriteLine($"Percent dead: {deathPercent} %");
-            Console.WriteLine($"Percent infected on average: {averageInfectedPerHour}");
+            Console.WriteLine($"Percent infected on average at a given time: {averageInfectedPerHour} %");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
             Console.ForegroundColor = ConsoleColor.Green;
