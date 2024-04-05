@@ -208,12 +208,13 @@ namespace Project3
                 //Quarantine chance is taken from the configuration
                 double quarantineChance = GenerateQuarantineChance();
                 double travelChance = GenerateTravelChance();
+                bool immunity = IsPersonImmune(); 
 
 
                 //Create person object
                 Person person = new Person(id, travelStartTime, travelEndTime, isInfected,
                                             infectionCount, infectionSpreadCount, isDead,
-                                            isQuarantined, quarantineChance, travelChance, 0, 0, config);
+                                            isQuarantined, quarantineChance, travelChance, 0, 0, immunity, config);
 
 
                 //Generated people are added to a list
@@ -253,6 +254,23 @@ namespace Project3
             double chance = rand.NextGaussian(mean, stdDev);
             //Chance clamped between 0 and 1
             return chance;
+        }
+        /// <summary>
+        /// Determines if someone is immune or not, very slim chance - natural immunity divides chance to contract disease by half
+        /// </summary>
+        /// <returns>bool for if someone is immune or not</returns>
+        public bool IsPersonImmune()
+        {
+            Random rand = new Random(); 
+            int chance = rand.Next(0, 101);
+            if(chance < 2)
+            {
+                return true; 
+            }
+            else
+            {
+                return false; 
+            }
         }
     }
 }//end namespace

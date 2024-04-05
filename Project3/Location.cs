@@ -62,6 +62,10 @@ namespace Project3
                 }
 
                 int chance = random.Next(0, 101);
+                if (otherPerson.Immunity)
+                {
+                    chance = chance / 2;
+                }
                 if (chance > spreadChance && !otherPerson.IsQuarantined)
                 {
                     otherPerson.IsInfected = true;
