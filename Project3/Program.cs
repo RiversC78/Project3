@@ -15,7 +15,7 @@ namespace Project3
 
             // File path for easy changing based off of where file is
             //string filePath = @"C:\Users\mgrac\OneDrive\Desktop\ConfigFile1.ini";
-            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile1.ini";
+            string filePath = @"C:\Users\xarsk\source\repos\Project3\ConfigFile4.ini";
 
             //filepath for csv
             //string csvFilePath = @"C:\Users\mgrac\OneDrive\Desktop\csvfolder\simulation.csv";
@@ -311,7 +311,7 @@ namespace Project3
             Console.WriteLine($"Total sim run time: {totalSimulationHours} hours in simulation time");
             Console.WriteLine($"Maximum sim run time: {config.SimulationHours} hours in simulation time");
             Console.WriteLine($"Total real run time: {stopwatch.ElapsedMilliseconds} milliseconds in real time");
-            Console.WriteLine($"Total infected: {totalInfected}");
+            Console.WriteLine($"Total infections: {totalInfected}");
             Console.WriteLine($"Total deaths: {totalDeaths}");
             Console.WriteLine($"Percent currently infected: {infectionPercentage} %");
             Console.WriteLine($"Percent dead: {deathPercent} %");

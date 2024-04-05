@@ -227,9 +227,8 @@ namespace Project3
             double stdDev = StDevQuarantineChance;
             //Chance clamped between 0 and 100, to be used like a percentage
             double chance = rand.NextGaussian(mean, stdDev);
-            //Chance clamped between 0 and 100, to be used like a percentage
-            //TODO instructions say to clamp between 0 and 1, checking with teacher if this method is fine or if I need to change it
-            return chance; 
+            //Chance clamped between 0 and 1
+            return chance / 100; 
         }//end GenerateQuarantineChance
     }
 }//end namespace

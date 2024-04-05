@@ -69,8 +69,8 @@ namespace Project3
                     currentPerson.InfectionSpreadCount++;
 
                     //Determines if the newly infected person will quarantine
-                    chance = random.Next(0, 101);
-                    if (otherPerson.QuarantineChance < chance)
+                    double chanceQuarantine = random.NextDouble();
+                    if (otherPerson.QuarantineChance < (chanceQuarantine))
                     {
                         otherPerson.IsQuarantined = true;
                     }
