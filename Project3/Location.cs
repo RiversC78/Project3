@@ -84,10 +84,10 @@ namespace Project3
         public void MovePeople(Person person)
         {
             Random random = new Random();
-            int randomNumber = random.Next(101);
-            if (randomNumber > person.TravelChance)
+            int randomNumber = random.Next(0, 101);
+            if (randomNumber < person.TravelChance)
             {
-                int pickNeighbor = new Random().Next(neighbors.Count());
+                int pickNeighbor = random.Next(0, neighbors.Count());
                 Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
 
                 chosenNeighbor.people.Add(person);

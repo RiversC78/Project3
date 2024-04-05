@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-//TODO sometimes in the final report the number of infected people is less than those dead, and it shouldn't be
 namespace Project3
 {
     /// <summary>
@@ -316,7 +315,7 @@ namespace Project3
             Console.WriteLine($"Total deaths: {totalDeaths}");
             Console.WriteLine($"Percent currently infected: {infectionPercentage} %");
             Console.WriteLine($"Percent dead: {deathPercent} %");
-            Console.WriteLine($"Percent infected on average: {averageInfectedPerHour} %");
+            Console.WriteLine($"Percent infected on average at a given time: {averageInfectedPerHour} %");
             Console.WriteLine($"Average number of people an infected person spread to: {averageInfectionsPerPerson}");
             Console.WriteLine($"Maximum number of people an infected person spread to: {maxInfectionPerPerson}");
             Console.ForegroundColor = ConsoleColor.Green;
