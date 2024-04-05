@@ -62,6 +62,10 @@ namespace Project3
                 }
 
                 int chance = random.Next(0, 101);
+                if (otherPerson.Immunity)
+                {
+                    chance = chance / 2;
+                }
                 if (chance > spreadChance && !otherPerson.IsQuarantined)
                 {
                     otherPerson.IsInfected = true;
@@ -69,8 +73,8 @@ namespace Project3
                     currentPerson.InfectionSpreadCount++;
 
                     //Determines if the newly infected person will quarantine
-                    chance = random.Next(0, 101);
-                    if (otherPerson.QuarantineChance < chance)
+                    double chanceQuarantine = random.NextDouble();
+                    if (otherPerson.QuarantineChance < (chanceQuarantine))
                     {
                         otherPerson.IsQuarantined = true;
                     }
@@ -84,10 +88,10 @@ namespace Project3
         public void MovePeople(Person person)
         {
             Random random = new Random();
-            int randomNumber = random.Next(101);
-            if (randomNumber > person.TravelChance)
+            int randomNumber = random.Next(0, 101);
+            if (randomNumber < person.TravelChance)
             {
-                int pickNeighbor = new Random().Next(neighbors.Count());
+                int pickNeighbor = random.Next(0, neighbors.Count());
                 Location chosenNeighbor = neighbors.ElementAt(pickNeighbor);
 
                 chosenNeighbor.people.Add(person);
