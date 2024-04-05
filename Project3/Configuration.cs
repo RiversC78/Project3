@@ -43,6 +43,8 @@ namespace Project3
         public int SimulationHours { get; set; }
         //Percent chance a person will travel each hour of the simulation value between 0-100 as a percentage
         public double TravelChance { get; set; }
+        //standard deviation of the percent chance someone will travel
+        public double StDevTravelChance { get; set; }   
 
         /// <summary>
         /// method to load information from a config file
@@ -128,8 +130,15 @@ namespace Project3
                                 string propertySet = temp[1].Trim();
                                 SimulationHours = int.Parse(propertySet);
                             }
-                            //set TravelChance
-                            else if (Regex.IsMatch(line, @"chanceOfTravel"))
+                            //set Average Travel Chance
+                            else if (Regex.IsMatch(line, @"meanChanceOfTravel"))
+                            {
+                                string[] temp = line.Split("=");
+                                string propertySet = temp[1].Trim();
+                                TravelChance = double.Parse(propertySet);
+                            }
+                            //set StdDev for travel chance
+                            else if (Regex.IsMatch(line, @"standDevTravelChance"))
                             {
                                 string[] temp = line.Split("=");
                                 string propertySet = temp[1].Trim();
@@ -198,8 +207,7 @@ namespace Project3
                 bool isQuarantined = false;
                 //Quarantine chance is taken from the configuration
                 double quarantineChance = GenerateQuarantineChance();
-                double travelChance = TravelChance;
-
+                double travelChance = GenerateTravelChance();
 
 
                 //Create person object
@@ -217,7 +225,7 @@ namespace Project3
         /// <summary>
         /// Creates the chance that someone will quarantine or not with statistics
         /// </summary>
-        /// <returns></returns>
+        /// <returns>double between 0 and 1</returns>
         private double GenerateQuarantineChance()
         {
             //Generate quarantine chance based on a normal random distribution
@@ -230,5 +238,21 @@ namespace Project3
             //Chance clamped between 0 and 1
             return chance / 100; 
         }//end GenerateQuarantineChance
+        /// <summary>
+        /// generates a chance for someone to travel with statistics
+        /// </summary>
+        /// <returns>integer between one and 100 to be used like a percentage</returns>
+        public double GenerateTravelChance()
+        {
+            //Generate quarantine chance based on a normal random distribution
+            Random rand = new Random();
+            //Mean and stardard deviation of quarantine chance are taken from configuration
+            double mean = MeanQuarantineChance;
+            double stdDev = StDevQuarantineChance;
+            //Chance clamped between 0 and 100, to be used like a percentage
+            double chance = rand.NextGaussian(mean, stdDev);
+            //Chance clamped between 0 and 1
+            return chance;
+        }
     }
 }//end namespace
