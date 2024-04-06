@@ -242,7 +242,7 @@ namespace Project3
 
                 }//end hour 
                 day++;
-            }//end main sim while loop
+            }//end main sim while loop 
             //end stopwatch time for total sim 
             stopwatch.Stop();
         //identifier for jump point if everyone is dead 
@@ -264,11 +264,11 @@ namespace Project3
                 }
             }
             //Calculates the percentage of people infected
-            double infectionPercentage = (double)infectedCountPercent / totalPeople * 100;
+            double infectionPercentage = ((double)infectedCountPercent / totalPeople) * 100;
             //Calculates the percentage of people are dead
             double deathPercent = (double)totalDeaths / totalPeople * 100;
-            //Calculates the average percent of people infected each hour
-            double averageInfectedPerHour = infectedPerHour.Average();
+            //Calculates the average number of people infected each hour
+            double averageInfectedPerHour = (infectedPerHour.Average() / totalPeople) *100;
             //Calculates the average number of people an infected person spread the disease to
             double averageInfectionsPerPerson;
             //checks if the disease was spread at all or if the first person who got the disease died before spreading it
@@ -328,7 +328,7 @@ namespace Project3
                 double avgInfected = location.AverageInfected() * 100;
                 double avgQuarantined = location.AverageQuarantined() * 100;
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($" ---- Location {location.Id}");
+                Console.WriteLine($" ---- Location: {location.Id}");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Average population size: {avgPop}");
                 Console.WriteLine($"Average percent of people sick with disease: {avgInfected} %");
